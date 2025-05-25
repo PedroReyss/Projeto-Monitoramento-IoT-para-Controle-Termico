@@ -1,0 +1,38 @@
+﻿@model List<DispositivoViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Listagem de Dispositivos</h2>
+<br />
+<a class="btn btn-info btn-sm" href="/Dispositivo/create">Novo Registro</a>
+<br />
+<br />
+<table class="table table-responsive table-hover">
+    <tr>
+        <th>Ações</th>
+        <th>Código</th>
+        <th>Apelido</th>
+        <th>ID Fiware</th>
+        <th>Nome Fiware</th>
+    </tr>
+    @foreach (var Dispositivo in Model)
+    {
+        <tr>
+            <td>
+                <a class="btn btn-info btn-sm" href="/Dispositivo/Edit?id=@Dispositivo.Id">Editar</a>
+                <a class="btn btn-danger btn-sm" href="javascript:apagarDispositivo(@Dispositivo.Id)">Apagar</a>
+            </td>
+            <td>@Dispositivo.Id</td>
+            <td>@Dispositivo.Apelido</td>
+            <td>@Dispositivo.DeviceId</td>
+            <td>@Dispositivo.EntityName</td>
+        </tr>
+    }
+</table>
+<script>
+    function apagarDispositivo(id)
+    {
+    if (confirm('Confirma a exclusão do registro?'))
+    location.href = 'Dispositivo/Delete?id=' + id;
+    }
+</script> 

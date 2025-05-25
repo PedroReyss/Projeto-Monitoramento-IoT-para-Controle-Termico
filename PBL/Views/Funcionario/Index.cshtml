@@ -1,0 +1,38 @@
+﻿@model List<FuncionarioViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Listagem de Funcionários</h2>
+<br />
+<a class="btn btn-info btn-sm" href="/Funcionario/create">Novo Registro</a>
+<br />
+<br />
+<table class="table table-responsive table-hover">
+    <tr>
+        <th>Ações</th>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>Cargo</th>
+    </tr>
+    @foreach (var Funcionario in Model)
+    {
+        <tr>
+            <td>
+                <a class="btn btn-info btn-sm" href="/Funcionario/Edit?id=@Funcionario.Id">Editar</a>
+                <a class="btn btn-danger btn-sm" href="javascript:apagarFuncionario(@Funcionario.Id)">Apagar</a>
+            </td>
+            <td>@Funcionario.Id</td>
+            <td>@Funcionario.Nome</td>
+            <td>@Funcionario.Idade</td>
+            <td>@Funcionario.Cargo</td>
+        </tr>
+    }
+</table>
+<script>
+    function apagarFuncionario(id)
+    {
+    if (confirm('Confirma a exclusão do registro?'))
+    location.href = 'Funcionario/Delete?id=' + id;
+    }
+</script> 
