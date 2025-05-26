@@ -11,8 +11,8 @@ namespace PBL.Controllers
     {
         protected PadraoDAO<T> DAO { get; set; }
         protected bool GeraProximoId { get; set; }
-        protected string NomeViewIndex { get; set; } = "index";
-        protected string NomeViewForm { get; set; } = "form";
+        protected string NomeViewIndex { get; set; } = "Index";
+        protected string NomeViewForm { get; set; } = "Form";
         protected bool ExigeAutenticacao { get; set; } = true;
 
         public virtual IActionResult Index()

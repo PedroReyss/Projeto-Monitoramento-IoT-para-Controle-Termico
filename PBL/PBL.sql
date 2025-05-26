@@ -3,8 +3,10 @@
 --------------------------------------------------------*/
 
 CREATE DATABASE ProjetoDB;
+GO
 
 USE ProjetoDB
+GO
 
 /*--------------------------------------------------------
 	TABELAS
@@ -32,11 +34,12 @@ CREATE TABLE Dispositivos (
  device_id varchar(50) not NULL,
  entity_name varchar(50) not NULL
 )
+GO
 
 /*--------------------------------------------------------
 	PROCEDURES
 ----------------------------------------------------------
-	Genéricas
+	Genï¿½ricas
 --------------------------------------------------------*/
 
 create procedure spDelete
@@ -88,7 +91,7 @@ end
 GO
 
 /*--------------------------------------------------------
-	Funcionário
+	Funcionï¿½rio
 --------------------------------------------------------*/
 create procedure spInsert_Funcionarios
 (
@@ -127,7 +130,7 @@ end
 GO
 
 /*--------------------------------------------------------
-	Usuário
+	Usuï¿½rio
 --------------------------------------------------------*/
 create procedure spInsert_Usuarios
 (
