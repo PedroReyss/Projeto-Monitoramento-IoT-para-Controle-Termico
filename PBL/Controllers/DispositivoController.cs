@@ -15,6 +15,18 @@ namespace PBL.Controllers
             DAO = new DispositivoDAO();
             GeraProximoId = true;
         }
+        public virtual IActionResult Properties(DispositivoViewModel model)
+        {
+            try
+            {
+                ViewBag.Operacao = "P";
+                return View("Status", model);
+            }
+            catch (Exception erro)
+            {
+            return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
         protected override void ValidaDados(DispositivoViewModel model, string operacao)
         {
             base.ValidaDados(model, operacao);
