@@ -45,6 +45,11 @@ namespace PBL.Controllers
             }
         }
 
+        public IActionResult Cadastro() {
+          UsuarioViewModel model = new UsuarioViewModel();
+          return View("Form", model);
+        }
+        
         public override IActionResult Edit(int id)
         {
             try
