@@ -28,6 +28,54 @@ namespace PBL.Controllers
                 return View("Error", new ErrorViewModel(erro.ToString()));
             }
         }
+
+        public override IActionResult Save(DispositivoViewModel model, string Operacao)
+        {
+            try
+            {
+                ValidaDados(model, Operacao);
+                if (ModelState.IsValid == false)
+                {
+                    ViewBag.Operacao = Operacao;
+                    PreencheDadosParaView(Operacao, model);
+                    return View(NomeViewForm, model);
+                }
+                else
+                {
+                    if (Operacao == "I")
+                    {
+                        DAO.Insert(model);
+                        _ = ClienteFiware.CriarDispositivoFiware(model);
+                    }
+                    else
+                    {
+                        DAO.Update(model);
+                        _ = ClienteFiware.EditarDispositivo(model);
+                    }
+                    return RedirectToAction(NomeViewIndex);
+                }
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
+        public override IActionResult Delete(int id)
+        {
+            try
+            {
+                _ = ClienteFiware.ExcluirDispositivo(DAO.Consulta(id));
+                DAO.Delete(id);
+                return RedirectToAction(NomeViewIndex);
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
+
         protected override void ValidaDados(DispositivoViewModel model, string operacao)
         {
             base.ValidaDados(model, operacao);
@@ -38,7 +86,6 @@ namespace PBL.Controllers
             if (string.IsNullOrEmpty(model.EntityName))
                 ModelState.AddModelError("EntityName", "Digite um nome para o Fiware");
         }
-
 
     }
 }

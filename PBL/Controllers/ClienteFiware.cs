@@ -11,7 +11,7 @@ namespace PBL.Controllers
 {
     public static class ClienteFiware
     {
-        private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "127.0.0.1";
+        private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "34.224.65.93";
 
         public static async Task CriarDispositivoFiware(DispositivoViewModel model)
         {
@@ -106,6 +106,21 @@ namespace PBL.Controllers
             AddHeaders(request);
 
             return await HelperControllers.EnviarRequisição(request);
+        }
+
+        public static async Task EditarDispositivo(DispositivoViewModel model)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, $"http://{IP_FIWARE}:4041/iot/devices/{model.DeviceId}");
+            AddHeaders(request);
+            var edicao = new
+            {
+                entity_name = $"urn:ngsi-ld:{model.EntityName}:{model.DeviceId}"
+            };
+            var json = JsonConvert.SerializeObject(edicao);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            request.Content = content;
+            await HelperControllers.EnviarRequisição(request);
         }
 
         private static void AddHeaders(HttpRequestMessage request)
