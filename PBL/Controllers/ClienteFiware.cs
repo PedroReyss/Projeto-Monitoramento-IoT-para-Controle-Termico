@@ -11,12 +11,12 @@ namespace PBL.Controllers
 {
     public static class ClienteFiware
     {
-        private const string IP_FIWARE = "";
+        private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "127.0.0.1";
+
         public static async Task CriarDispositivoFiware(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://" + IP_FIWARE + ":4041/iot/devices");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
+            AddHeaders(request);
             var device = new
             {
                 devices = new[] {
@@ -47,8 +47,7 @@ namespace PBL.Controllers
         public static async Task<string> GetResultadoMedição(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"http://{IP_FIWARE}:1026/v2/entities/urn:ngsi-ld:{model.EntityName}:{model.DeviceId}/attrs/voltage");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
+            AddHeaders(request);
             request.Headers.Add("accept", "application/json");
 
             return await HelperControllers.EnviarRequisição(request);
@@ -57,8 +56,7 @@ namespace PBL.Controllers
         public static async Task ExcluirDispositivo(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, $"http://{IP_FIWARE}:4041/iot/devices/{model.DeviceId}");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
+            AddHeaders(request);
 
             await HelperControllers.EnviarRequisição(request);
         }
@@ -66,8 +64,7 @@ namespace PBL.Controllers
         public static async Task SubscribeOrion(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, $"http://{IP_FIWARE}:1026/v2/subscriptions");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
+            AddHeaders(request);
             var subscription = new
             {
                 description = "Notify STH-Comet of all Motion Sensor count changes",
@@ -106,8 +103,7 @@ namespace PBL.Controllers
         public static async Task<string> ObterHistorico(DispositivoViewModel model, int numeroDeRegistros)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"http://{IP_FIWARE}:8666/STH/v1/contextEntities/type/{model.EntityName}/id/urn:ngsi-ld:{model.EntityName}:{model.DeviceId}/attributes/voltage?lastN={numeroDeRegistros}");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
+            AddHeaders(request);
 
             return await HelperControllers.EnviarRequisição(request);
         }
