@@ -5,6 +5,7 @@ using PBL.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace PBL.Controllers
 {
@@ -24,7 +25,7 @@ namespace PBL.Controllers
             }
             catch (Exception erro)
             {
-            return View("Error", new ErrorViewModel(erro.ToString()));
+                return View("Error", new ErrorViewModel(erro.ToString()));
             }
         }
         protected override void ValidaDados(DispositivoViewModel model, string operacao)
@@ -38,35 +39,6 @@ namespace PBL.Controllers
                 ModelState.AddModelError("EntityName", "Digite um nome para o Fiware");
         }
 
-        private void CriarDispositivoFiware(DispositivoViewModel model) {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://3.90.209.194:4041/iot/devices");
-            request.Headers.Add("fiware-service", "smart");
-            request.Headers.Add("fiware-servicepath", "/");
-            var content = new StringContent("{\"devices\": [{" +
-                                            $"      \"device_id\": \"{model.DeviceId}\",         " +
-                                            "      \"entity_name\": \"urn:ngsi-ld:DataLogger:001\",   " +
-                                            "      \"entity_type\": \"DataLogger\",          " +
-                                            "      \"protocol\": \"PDI-IoTA-UltraLight\",  " +
-                                            "      \"transport\": \"MQTT\",            " +
-                                            "" +
-                                            "      " +
-                                            "      \"commands\": [" +
-                                            "        { \"name\": \"on\", \"type\": \"command\" },  " +
-                                            "        { \"name\": \"off\", \"type\": \"command\" }  " +
-                                            "      ]," +
-                                            "" +
-                                            "      " +
-                                            "      \"attributes\": [" +
-                                            "        { \"object_id\": \"s\", \"name\": \"state\", \"type\": \"Text\" }, " +
-                                            "        { \"object_id\": \"v\", \"name\": \"voltage\", \"type\": \"Float\"}," +
-                                            "        { \"object_id\": \"t\", \"name\": \"temperature\", \"type\": \"Float\"}" +
-                                            "      ]" +
-                                            "    }" +
-                                            "  ]" +
-                                            "}", null, "application/json");
-            request.Content = content;
-            ClienteFiware.Get(request);
-        }
 
     }
 }
