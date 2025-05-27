@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using PBL.Models;
 
 namespace PBL.Controllers
@@ -16,24 +17,30 @@ namespace PBL.Controllers
             var request = new HttpRequestMessage(HttpMethod.Post, "http://" + IP_FIWARE + ":4041/iot/devices");
             request.Headers.Add("fiware-service", "smart");
             request.Headers.Add("fiware-servicepath", "/");
-            var content = new StringContent("{\"devices\": [{" +
-                                            $"    \"device_id\": \"{model.DeviceId}\"," +
-                                            $"    \"entity_name\": \"urn:ngsi-ld:{model.EntityName}:{model.DeviceId}\"," +
-                                            $"    \"entity_type\": \"{model.EntityName}\"," +
-                                            "    \"protocol\": \"PDI-IoTA-UltraLight\"," +
-                                            "    \"transport\": \"MQTT\"," +
-                                            "    \"commands\": [" +
-                                            "        { \"name\": \"on\", \"type\": \"command\" }," +
-                                            "        { \"name\": \"off\", \"type\": \"command\" }" +
-                                            "      ]," +
-                                            "    \"attributes\": [" +
-                                            "        { \"object_id\": \"s\", \"name\": \"state\", \"type\": \"Text\" }, " +
-                                            "        { \"object_id\": \"v\", \"name\": \"voltage\", \"type\": \"Float\"}," +
-                                            "      ]" +
-                                            "    }" +
-                                            "  ]" +
-                                            "}", null, "application/json");
+            var device = new
+            {
+                devices = new[] {
+                    new {
+                        device_id = model.DeviceId,
+                        entity_name = $"urn:ngsi-ld:{model.EntityName}:{model.DeviceId}",
+                        entity_type = model.EntityName,
+                        protocol = "PDI-IoTA-UltraLight",
+                        transport = "MQTT",
+                        commands = new[] {
+                            new { name = "on", type = "command" },
+                            new { name = "off", type = "command" }
+                        },
+                        attributes = new[] {
+                            new { object_id = "s", name = "state", type = "Text" },
+                            new { object_id = "v", name = "voltage", type = "Float" }
+                        }
+                    }
+                }
+            };
+            string json = JsonConvert.SerializeObject(device);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
             request.Content = content;
+
             await HelperControllers.EnviarRequisição(request);
         }
 
@@ -61,23 +68,36 @@ namespace PBL.Controllers
             var request = new HttpRequestMessage(HttpMethod.Post, $"http://{IP_FIWARE}:1026/v2/subscriptions");
             request.Headers.Add("fiware-service", "smart");
             request.Headers.Add("fiware-servicepath", "/");
-            var content = new StringContent("{\"description\": \"Notify STH-Comet of all Motion Sensor count changes\"," +
-                                            "\"subject\": {" +
-                                            "    \"entities\": [{" +
-                                            $"        \"id\": \"urn:ngsi-ld:{model.EntityName}:{model.DeviceId}\"," +
-                                            $"        \"type\": \"{model.EntityName}\"" +
-                                            "    }]," +
-                                            "    \"condition\": { \"attrs\": [\"voltage\"] } " +
-                                            "}," +
-                                            "\"notification\": {" +
-                                            "    \"http\": {" +
-                                            $"    \"url\": \"http://{IP_FIWARE}:8666/notify\"" +
-                                            "    }," +
-                                            "    \"attrs\": [" +
-                                            "      \"voltage\" " +
-                                            "    ]," +
-                                            "    \"attrsFormat\": \"legacy\" " +
-                                            "}}", null, "application/json");
+            var subscription = new
+            {
+                description = "Notify STH-Comet of all Motion Sensor count changes",
+                subject = new
+                {
+                    entities = new[]
+                    {
+                        new
+                        {
+                            id = $"urn:ngsi-ld:{model.EntityName}:{model.DeviceId}",
+                            type = model.EntityName
+                        }
+                    },
+                    condition = new
+                    {
+                        attrs = new[] { "voltage" }
+                    }
+                },
+                notification = new
+                {
+                    http = new
+                    {
+                        url = $"http://{IP_FIWARE}:8666/notify"
+                    },
+                    attrs = new[] { "voltage" },
+                    attrsFormat = "legacy"
+                }
+            };
+            var json = JsonConvert.SerializeObject(subscription);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
             request.Content = content;
 
             await HelperControllers.EnviarRequisição(request);
@@ -90,6 +110,12 @@ namespace PBL.Controllers
             request.Headers.Add("fiware-servicepath", "/");
 
             return await HelperControllers.EnviarRequisição(request);
+        }
+
+        private static void AddHeaders(HttpRequestMessage request)
+        {
+            request.Headers.Add("fiware-service", "smart");
+            request.Headers.Add("fiware-servicepath", "/");
         }
     }
 }
