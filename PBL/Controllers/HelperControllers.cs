@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using PBL.Enum;
 
 namespace PBL.Controllers
 {
@@ -34,6 +35,11 @@ namespace PBL.Controllers
             else
                 return true;
         }
+
+        public static Boolean UserEhAdmin(ISession session)
+        {
+            return session.GetInt32("Tipo") == (int)TipoEnum.Administrador;
+        } 
 
         
     }

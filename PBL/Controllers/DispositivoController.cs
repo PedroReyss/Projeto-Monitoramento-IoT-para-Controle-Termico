@@ -44,13 +44,13 @@ namespace PBL.Controllers
                 {
                     if (Operacao == "I")
                     {
+                        _ = ClienteFiware.CriarDispositivo(model);
                         DAO.Insert(model);
-                        _ = ClienteFiware.CriarDispositivoFiware(model);
                     }
                     else
                     {
-                        DAO.Update(model);
                         _ = ClienteFiware.EditarDispositivo(model);
+                        DAO.Update(model);
                     }
                     return RedirectToAction(NomeViewIndex);
                 }

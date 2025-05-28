@@ -39,7 +39,7 @@ namespace PBL.Controllers
                 ModelState.AddModelError("Tipo", "Selecione um tipo para o usuário");
             if (string.IsNullOrEmpty(model.Username))
                 ModelState.AddModelError("Username", "Digite um username");
-            if (((UsuarioDAO)DAO).ConsultaPorUsername(model.Username) != null)
+            if (operacao == "I" && ((UsuarioDAO)DAO).ConsultaPorUsername(model.Username) != null)
                 ModelState.AddModelError("Username", "Username já está em uso");
             if (string.IsNullOrEmpty(model.Senha))
                 ModelState.AddModelError("Senha", "Digite uma senha");
@@ -69,11 +69,12 @@ namespace PBL.Controllers
             }
         }
 
-        public IActionResult Cadastro() {
+        public IActionResult Cadastro()
+        {
             UsuarioViewModel model = new UsuarioViewModel();
             return View("Form", model);
         }
-        
+
         public override IActionResult Edit(int id)
         {
             try
@@ -83,7 +84,7 @@ namespace PBL.Controllers
                     ViewBag.Operacao = "A";
                     var model = DAO.Consulta(id);
                     PreparaListaFuncionariosParaCombo();
-                    if (model == null)
+                    if (model == null || !HelperControllers.UserEhAdmin(HttpContext.Session))
                         return RedirectToAction(NomeViewIndex);
                     else
                     {
@@ -138,7 +139,8 @@ namespace PBL.Controllers
                 if (user != null && user.Senha == senha)
                 {
                     HttpContext.Session.SetString("Logado", "true");
-                    HttpContext.Session.SetString("User", user.Username);
+                    HttpContext.Session.SetInt32("User", user.Id);
+                    HttpContext.Session.SetInt32("Tipo", user.Tipo);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -174,6 +176,14 @@ namespace PBL.Controllers
                 listaFuncionarios.Add(item);
             }
             ViewBag.Funcionarios = listaFuncionarios;
+        }
+
+        public override IActionResult Delete(int id)
+        {
+            if (HelperControllers.UserEhAdmin(HttpContext.Session))
+                return base.Delete(id);
+            else
+                return RedirectToAction(NomeViewIndex);
         }
     }
 }

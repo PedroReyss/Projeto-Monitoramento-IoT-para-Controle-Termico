@@ -13,7 +13,7 @@ namespace PBL.Controllers
     {
         private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "127.0.0.1";
 
-        public static async Task CriarDispositivoFiware(DispositivoViewModel model)
+        public static async Task CriarDispositivo(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://" + IP_FIWARE + ":4041/iot/devices");
             AddHeaders(request);
