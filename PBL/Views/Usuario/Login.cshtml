@@ -1,0 +1,22 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="align-content-center">
+    
+
+    <form action="/Usuario/FazerLogin" method="post" class="col-md-6 offset-3">
+        <h2>Entrar</h2> <br/>
+
+        <label for="usuario" class="control-label">Usuário</label>
+        <input type="text" name="usuario" class="form-control" required placeholder='Nome de usuário' />
+
+        <label for="senha" class="control-label">Senha</label>
+        <input type="password" name="senha" class="form-control" required placeholder='Senha' />
+        <br />
+
+        <input type="submit" value="Login" class="btn btn-success" />
+        <br />
+        <span class="text-danger"> @ViewBag.Erro</span>
+    </form>
+</div>

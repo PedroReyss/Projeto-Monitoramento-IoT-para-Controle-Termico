@@ -39,6 +39,18 @@ namespace PBL.DAO
             return u;
         }
 
+        public UsuarioViewModel ConsultaPorUsername(string username)
+        {
+            var p = new SqlParameter[]{
+                new SqlParameter("username", username)
+            };
+            var tabela = HelperDAO.ExecutaProcSelect("spConsultaUsername", p);
+            if (tabela.Rows.Count == 0)
+                return null;
+            else
+                return MontaModel(tabela.Rows[0]);
+        }
+
         protected override void SetTabela()
         {
             Tabela = "Usuarios";

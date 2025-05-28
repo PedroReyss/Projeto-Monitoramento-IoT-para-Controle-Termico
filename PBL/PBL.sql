@@ -36,6 +36,21 @@ CREATE TABLE Dispositivos (
 )
 GO
 
+
+-- Modificação no atributo para tornar o login possível
+ALTER TABLE Usuarios
+ADD CONSTRAINT UQ_Usuarios_Username UNIQUE (username)
+GO
+
+ -- Inserção de um usuário admin
+INSERT INTO Funcionarios (id, nome, idade, cargo, foto)
+VALUES (1, 'Administrador', 30, 'Administrador do Sistema', NULL)
+GO
+
+INSERT INTO Usuarios (id, id_pessoa, tipo, username, senha)
+VALUES (1, 1, 1, 'admin', 'admin123')
+GO
+
 /*--------------------------------------------------------
 	PROCEDURES
 ----------------------------------------------------------
@@ -170,7 +185,6 @@ GO
 create procedure spListagem_Usuario
 as
 begin
-
 select Usuarios.id,
 	   Usuarios.id_pessoa,
 	   Funcionarios.nome,
@@ -181,7 +195,16 @@ from Usuarios
 left join Funcionarios
 on Usuarios.id_pessoa = Funcionarios.id
 order by Usuarios.id
+end
+GO
 
+create procedure spConsultaUsername
+(
+ @username varchar(50)
+)
+as
+begin
+ select * from Usuarios where username = @username
 end
 GO
 

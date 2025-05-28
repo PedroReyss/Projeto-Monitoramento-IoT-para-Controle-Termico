@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace PBL.Controllers
 {
@@ -10,12 +11,11 @@ namespace PBL.Controllers
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-
         public static async Task<string> EnviarRequisição(HttpRequestMessage request)
         {
             var response = await httpClient.SendAsync(request);
             var conteudo = await response.Content.ReadAsStringAsync();
- 
+
             if (response.IsSuccessStatusCode)
             {
                 return conteudo;
@@ -25,5 +25,16 @@ namespace PBL.Controllers
                 throw new Exception($"Erro na requisição. Code: {response.StatusCode}. Detalhes {conteudo}");
             }
         }
+
+        public static Boolean UserEstaLogado(ISession session)
+        {
+            string logado = session.GetString("Logado");
+            if (logado == null)
+                return false;
+            else
+                return true;
+        }
+
+        
     }
 }

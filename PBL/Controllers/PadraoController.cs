@@ -118,5 +118,17 @@ namespace PBL.Controllers
                 return View("Error", new ErrorViewModel(erro.ToString()));
             }
         }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (ExigeAutenticacao && !HelperControllers.UserEstaLogado(HttpContext.Session))
+                context.Result = RedirectToAction("Login", "Usuario");
+            else
+            {
+                ViewBag.Logado = true;
+                base.OnActionExecuting(context);
+            }
+        }
+
     }
 }

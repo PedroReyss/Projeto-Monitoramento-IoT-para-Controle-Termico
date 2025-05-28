@@ -14,6 +14,20 @@ namespace PBL.Controllers
         {
             DAO = new UsuarioDAO();
             GeraProximoId = true;
+            ExigeAutenticacao = false;
+        }
+
+        public override IActionResult Index()
+        {
+            if (HelperControllers.UserEstaLogado(HttpContext.Session))
+                return base.Index();
+            else
+                return View("Login");
+        }
+
+        public IActionResult Login()
+        {
+            return View("Login");
         }
 
         protected override void ValidaDados(UsuarioViewModel model, string operacao)
@@ -25,6 +39,8 @@ namespace PBL.Controllers
                 ModelState.AddModelError("Tipo", "Selecione um tipo para o usuário");
             if (string.IsNullOrEmpty(model.Username))
                 ModelState.AddModelError("Username", "Digite um username");
+            if (((UsuarioDAO)DAO).ConsultaPorUsername(model.Username) != null)
+                ModelState.AddModelError("Username", "Username já está em uso");
             if (string.IsNullOrEmpty(model.Senha))
                 ModelState.AddModelError("Senha", "Digite uma senha");
         }
@@ -33,11 +49,19 @@ namespace PBL.Controllers
         {
             try
             {
-                ViewBag.Operacao = "I";
-                UsuarioViewModel model = new UsuarioViewModel();
-                PreencheDadosParaView("I", model);
-                PreparaListaFuncionariosParaCombo();
-                return View(NomeViewForm, model);
+                if (HelperControllers.UserEstaLogado(HttpContext.Session))
+                {
+                    ViewBag.Operacao = "I";
+                    UsuarioViewModel model = new UsuarioViewModel();
+                    PreencheDadosParaView("I", model);
+                    PreparaListaFuncionariosParaCombo();
+                    return View(NomeViewForm, model);
+                }
+                else
+                {
+                    return View("Login");
+                }
+
             }
             catch (Exception erro)
             {
@@ -46,23 +70,30 @@ namespace PBL.Controllers
         }
 
         public IActionResult Cadastro() {
-          UsuarioViewModel model = new UsuarioViewModel();
-          return View("Form", model);
+            UsuarioViewModel model = new UsuarioViewModel();
+            return View("Form", model);
         }
         
         public override IActionResult Edit(int id)
         {
             try
             {
-                ViewBag.Operacao = "A";
-                var model = DAO.Consulta(id);
-                PreparaListaFuncionariosParaCombo();
-                if (model == null)
-                    return RedirectToAction(NomeViewIndex);
+                if (HelperControllers.UserEstaLogado(HttpContext.Session))
+                {
+                    ViewBag.Operacao = "A";
+                    var model = DAO.Consulta(id);
+                    PreparaListaFuncionariosParaCombo();
+                    if (model == null)
+                        return RedirectToAction(NomeViewIndex);
+                    else
+                    {
+                        PreencheDadosParaView("A", model);
+                        return View(NomeViewForm, model);
+                    }
+                }
                 else
                 {
-                    PreencheDadosParaView("A", model);
-                    return View(NomeViewForm, model);
+                    return View("Login");
                 }
             }
             catch (Exception erro)
@@ -97,6 +128,38 @@ namespace PBL.Controllers
                 return View("Error", new ErrorViewModel(erro.ToString()));
             }
         }
+
+        public IActionResult FazerLogin(string usuario, string senha)
+        {
+            try
+            {
+                UsuarioViewModel user = ((UsuarioDAO)DAO).ConsultaPorUsername(usuario);
+
+                if (user != null && user.Senha == senha)
+                {
+                    HttpContext.Session.SetString("Logado", "true");
+                    HttpContext.Session.SetString("User", user.Username);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Erro = "Usuário ou senha inválidos!";
+                    return View("Login");
+                }
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
+        public IActionResult LogOff()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
 
         private void PreparaListaFuncionariosParaCombo()
         {
