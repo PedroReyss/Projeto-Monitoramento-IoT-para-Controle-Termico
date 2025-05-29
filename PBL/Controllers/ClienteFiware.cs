@@ -100,11 +100,11 @@ namespace PBL.Controllers
             await HelperControllers.EnviarRequisição(request);
         }
 
-        public static async Task<string> ObterHistorico(DispositivoViewModel model)
+        public static async Task<string> ObterHistorico(DispositivoViewModel model, int lastN)
         {
-            SubscribeOrion(model);
+            await SubscribeOrion(model);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"http://{IP_FIWARE}:8666/STH/v1/contextEntities/type/{model.EntityName}/id/urn:ngsi-ld:{model.EntityName}:{model.DeviceId}/attributes/voltage?lastN=100");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://{IP_FIWARE}:8666/STH/v1/contextEntities/type/{model.EntityName}/id/urn:ngsi-ld:{model.EntityName}:{model.DeviceId}/attributes/voltage?lastN={lastN}");
             AddHeaders(request);
 
             return await HelperControllers.EnviarRequisição(request);
