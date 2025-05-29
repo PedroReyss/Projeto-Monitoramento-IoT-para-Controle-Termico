@@ -87,5 +87,12 @@ namespace PBL.Controllers
                 ModelState.AddModelError("EntityName", "Digite um nome para o Fiware");
         }
 
+        public IActionResult GetDados(int id, int lastN)
+        {
+            DispositivoViewModel model = DAO.Consulta(id);
+            var json = ClienteFiware.ObterHistorico(model, lastN).Result;
+            return Json(json);
+        }
+
     }
 }
