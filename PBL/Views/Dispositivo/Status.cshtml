@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DispositivoViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -44,59 +45,44 @@
 </style>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<canvas id="voltageChart" width="600" height="300"></canvas>
+
 <script>
-    let intervaloAtualizacaoSegundos = 10;
-    const maxPontos = 10;  // Limite máximo de dados no gráfico
+function atualizarGrafico() {
+    $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=50', function(response) {
+        // response é um array de objetos: [{data, voltagem, temperatura}, ...]
+        const labels = response.map(v => v.data);
+        const data = response.map(v => v.voltagem);
 
-    const apiUrl = "/api/ClienteFiware?url=" +
-                   encodeURIComponent("http://18.206.173.173:8666/STH/v1/contextEntities/type/DataLogger/id/urn:ngsi-ld:DataLogger:001/attributes/temperature?lastN=10");
-
-    let ctx = document.getElementById('graficoTemperatura').getContext('2d');
-    let graficoTemperatura = new Chart(ctx, {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: "Temperatura (°C)", data: [], borderColor: "red", backgroundColor: "rgba(255, 99, 132, 0.2)", fill: true }] },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false, // Evita crescimento infinito
-            scales: {
-                x: { title: { display: true, text: "Tempo" } },
-                y: { title: { display: true, text: "Temperatura (°C)" }, suggestedMin: 10, suggestedMax: 50 }
-            }
-        }
+        voltageChart.data.labels = labels;
+        voltageChart.data.datasets[0].data = data;
+        voltageChart.update();
     });
-
-    function obterDadosEAtualizar() {
-        $.getJSON(apiUrl, function(response) {
-            console.log("Dados recebidos:", response);
-
-            if (!response || !response.dados || !Array.isArray(response.dados)) {
-                console.error("Formato de dados inválido.");
-                return;
-            }
-
-            let timestamps = response.dados.map(item => new Date(item.timestamp).toLocaleTimeString());
-            let temperaturas = response.dados.map(item => parseFloat(item.valor));
-
-            if (timestamps.length === 0 || temperaturas.length === 0) {
-                console.warn("Nenhum dado válido para exibir.");
-                return;
-            }
-
-            // Se atingiu o limite máximo, remove os primeiros elementos
-            while (graficoTemperatura.data.labels.length >= maxPontos) {
-                graficoTemperatura.data.labels.shift();
-                graficoTemperatura.data.datasets[0].data.shift();
-            }
-
-            graficoTemperatura.data.labels.push(timestamps[timestamps.length - 1]);
-            graficoTemperatura.data.datasets[0].data.push(temperaturas[temperaturas.length - 1]);
-
-            graficoTemperatura.update();
-        }).fail(function(error) {
-            console.error("Erro ao buscar dados:", error);
-        });
+}
+const ctx = document.getElementById('voltageChart').getContext('2d');
+const voltageChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Tensão (V)',
+            data: [],
+            borderColor: 'blue',
+            fill: false
+        }]
+    },
+    options: {
+        scales: {
+            x: { title: { display: true, text: 'Tempo' } },
+            y: { title: { display: true, text: 'Tensão (V)' } }
+        }
     }
+});
 
-    obterDadosEAtualizar();
-    setInterval(obterDadosEAtualizar, intervaloAtualizacaoSegundos * 1000);
+// Atualiza o gráfico ao carregar e a cada 10 segundos
+atualizarGrafico();
+setInterval(atualizarGrafico, 10000);
 </script>

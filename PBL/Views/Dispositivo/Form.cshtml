@@ -28,13 +28,7 @@
             <span asp-validation-for="DeviceId" class="text-danger"></span>
             <br />
             <label for="EntityName" class="control-label">Nome no Fiware</label>
-            @if (ViewBag.Operacao == "I")
-            {
-                <input asp-for="EntityName" class="form-control" />
-            } else
-            {
-                <input asp-for="EntityName" class="form-control" readonly/>
-            }
+            <input asp-for="EntityName" class="form-control" />
             <span asp-validation-for="EntityName" class="text-danger"></span>
             <br />
             <input class="btn btn-primary" type="submit" value="Salvar dados" />

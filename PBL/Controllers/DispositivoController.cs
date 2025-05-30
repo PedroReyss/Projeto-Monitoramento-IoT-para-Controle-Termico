@@ -18,10 +18,11 @@ namespace PBL.Controllers
             DAO = new DispositivoDAO();
             GeraProximoId = true;
         }
-        public virtual IActionResult Properties(DispositivoViewModel model)
+        public virtual IActionResult Properties(int id)
         {
             try
             {
+                DispositivoViewModel model = DAO.Consulta(id);
                 ViewBag.Operacao = "P";
                 return View("Status", model);
             }
@@ -115,6 +116,14 @@ namespace PBL.Controllers
                 return Json(new { erro = true, msg = erro.Message });
             }
         }
+
+        // [MATHEUS] ToDo: Consulta direto no fiware; Lista os dispositivos na nuvem; Obtém última leitura de cada um
+        // Incluir valor e data na viewmodel; Filtrar por nome da entidade, valor medido e intervalo de tempo; 
+        // Mandar para a view de consulta.
+        // Única possibilidade que eu imagino para esta exigência:
+        // Duas telas de consulta que permitam filtros para exibição de dados. Os dados deverão ser consultados nas 
+        // APIs: https://github.com/fabiocabrini/fiware. A tela deve possuir ao menos 3 filtros, como por exemplo 
+        // Intervalo de data, descrição, etc.
 
         private double ConverterAnalogReadParaVolt(int analogRead)
         {

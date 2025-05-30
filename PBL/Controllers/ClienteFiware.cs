@@ -53,6 +53,16 @@ namespace PBL.Controllers
             return await HelperControllers.EnviarRequisição(request);
         }
 
+        public static async Task<string> GetDispositivos()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://{IP_FIWARE}:4041/iot/devices");
+            AddHeaders(request);
+            request.Headers.Add("accept", "application/json");
+
+            return await HelperControllers.EnviarRequisição(request);
+        }
+
+
         public static async Task ExcluirDispositivo(DispositivoViewModel model)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, $"http://{IP_FIWARE}:4041/iot/devices/{model.DeviceId}");
