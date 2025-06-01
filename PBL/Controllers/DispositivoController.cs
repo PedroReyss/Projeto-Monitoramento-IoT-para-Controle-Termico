@@ -15,6 +15,7 @@ namespace PBL.Controllers
 {
     public class DispositivoController : PadraoController<DispositivoViewModel>
     {
+        private static double offsetTemperatura = 0;
         public DispositivoController()
         {
             DAO = new DispositivoDAO();
@@ -196,16 +197,43 @@ namespace PBL.Controllers
             return dispositivos;
         }
 
+        public IActionResult CalibrarTemperatura(double temperaturaReal, double temperaturaCalculada)
+        {
+            double offset = temperaturaCalculada - temperaturaReal;
+            SetOffsetTemperatura(offset);
+            return Json(new { sucesso = true, ajuste = offsetTemperatura });
+        }
+        
+        public IActionResult ResetarCalibracao()
+        {
+            SetOffsetTemperatura(0);
+            return Json(new { sucesso = true });
+        }
+
+        private double GetOffsetTemperatura()
+        {
+            var valor = HttpContext.Session.GetString("offset");
+            if (double.TryParse(valor, out var offset))
+                return offset;
+            return 0;
+        }
+
+        private void SetOffsetTemperatura(double valor)
+        {
+            HttpContext.Session.SetString("offset", valor.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        }
+
         private double ConverterAnalogReadParaVolt(int analogRead)
         {
             // Considera-se que se mede a tensão dividida entre três resistências iguais (portanto igual a 1/3 da original)
-            return (analogRead * 3.3 / 4095) * 3;
+            return analogRead * 3.3 / 4095 * 3;
         }
 
         private double CalcularTemperatura(double voltagem)
         {
             // usar aqui a função da regressão linear descoberta experimentalmente
-            return ((voltagem + 3.891375) / 0.203519);
+            double temperatura = ((voltagem + 0.023853851) / 0.099411327);
+            return temperatura - offsetTemperatura;
         }
 
     }

@@ -141,7 +141,7 @@ namespace PBL.Controllers
                     HttpContext.Session.SetString("Logado", "true");
                     HttpContext.Session.SetInt32("User", user.Id);
                     HttpContext.Session.SetInt32("Tipo", user.Tipo);
-
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
