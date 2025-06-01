@@ -139,7 +139,7 @@ namespace PBL.Controllers
             }
         }
 
-        public async Task<IActionResult> ObterDadosConsultaAsync(string nome, int valorMenor, int valorMaior, DateTime dataInicial, DateTime dataFinal)
+        public async Task<IActionResult> ObterDadosConsultaAsync(string nome, int? valorMenor, int? valorMaior, DateTime? dataInicial, DateTime? dataFinal)
         {
             try
             {
@@ -148,13 +148,13 @@ namespace PBL.Controllers
 
                 var dispositivosFiltrados = dispositivos.Where(dispositivo =>
                     (string.IsNullOrEmpty(nome) || (dispositivo.Apelido != null && dispositivo.Apelido.Contains(nome, StringComparison.OrdinalIgnoreCase))) &&
-                    (!dispositivo.ValorUltimaMedicao.HasValue ||
-                        (dispositivo.ValorUltimaMedicao >= valorMenor && dispositivo.ValorUltimaMedicao <= valorMaior)) &&
-                    (!dispositivo.DataUltimaMedicao.HasValue ||
-                        (dispositivo.DataUltimaMedicao >= dataInicial && dispositivo.DataUltimaMedicao <= dataFinal))
+                    (!valorMenor.HasValue || (dispositivo.ValorUltimaMedicao.HasValue && dispositivo.ValorUltimaMedicao >= valorMenor)) &&
+                    (!valorMaior.HasValue || (dispositivo.ValorUltimaMedicao.HasValue && dispositivo.ValorUltimaMedicao <= valorMaior)) &&
+                    (!dataInicial.HasValue || (dispositivo.DataUltimaMedicao.HasValue && dispositivo.DataUltimaMedicao >= dataInicial)) &&
+                    (!dataFinal.HasValue || (dispositivo.DataUltimaMedicao.HasValue && dispositivo.DataUltimaMedicao <= dataFinal))
                 ).ToList();
 
-                return PartialView("pvGridDispositivo", dispositivosFiltrados);
+                return PartialView("pvGridDispositivos", dispositivosFiltrados);
             }
             catch (Exception erro)
             {

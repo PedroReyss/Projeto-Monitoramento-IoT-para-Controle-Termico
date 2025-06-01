@@ -17,15 +17,6 @@ namespace PBL.Controllers
             var response = await httpClient.SendAsync(request);
             var conteudo = await response.Content.ReadAsStringAsync();
 
-            // if (response.IsSuccessStatusCode)
-            // {
-            //     return conteudo;
-            // }
-            // else
-            // {
-            //     throw new Exception($"Erro na requisição. Code: {response.StatusCode}. Detalhes {conteudo}");
-            // }
-
             return conteudo;
         }
 

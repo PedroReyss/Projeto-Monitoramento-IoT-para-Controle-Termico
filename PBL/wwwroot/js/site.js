@@ -6,11 +6,10 @@
 
 function aplicarFiltroConsulta() {
     var vNome = document.getElementById('nome').value;
-    var vValorMenor = document.getElementById('valorMenor').value;
-    var vValorMaior = document.getElementById('valorMaior').value;
-    var vDataInicial = document.getElementById('dataInicial').value;
-    var vDataFinal = document.getElementById('dataFinal').value;
-    $.ajax({
+    var vValorMenor = document.getElementById('valorMenor').value || null;
+    var vValorMaior = document.getElementById('valorMaior').value || null;
+    var vDataInicial = document.getElementById('dataInicial').value || null;
+    var vDataFinal = document.getElementById('dataFinal').value || null;    $.ajax({
         url: "/Dispositivo/ObterDadosConsulta",
         data: { nome: vNome, valorMenor: vValorMenor, valorMaior: vValorMaior, dataInicial: vDataInicial, dataFinal: vDataFinal },
         success: function (dados) {
