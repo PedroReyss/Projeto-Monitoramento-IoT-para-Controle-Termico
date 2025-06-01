@@ -1,0 +1,18 @@
+@model List<DispositivoViewModel>
+<table class="table table-striped">
+    <tr>
+        <th>Nome</th>
+        <th>ID do dispositivo</th>
+        <th>Última medição (°C)</th>
+        <th>Data/Hora da ultima medição</th>
+    </tr>
+    @foreach (var dispositivo in Model)
+    {
+        <tr>
+            <td>@dispositivo.Apelido</td>
+            <td>@dispositivo.DeviceId</td>
+            <td>@dispositivo.ValorUltimaMedicao?.ToString("0.00")</td>
+            <td>@dispositivo.DataUltimaMedicao?.ToString("g")</td>
+        </tr>
+    }
+</table>

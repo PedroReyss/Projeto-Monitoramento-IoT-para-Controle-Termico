@@ -8,7 +8,7 @@ namespace PBL.Models
         public string Apelido { get; set; }
         public string DeviceId { get; set; }
         public string EntityName { get; set; }
-        public int? ValorUltimaMedicao { get; set; }
-        public DateTime DataUltimaMedicao { get; set; }
+        public double? ValorUltimaMedicao { get; set; }
+        public DateTime? DataUltimaMedicao { get; set; }
     }
 }
