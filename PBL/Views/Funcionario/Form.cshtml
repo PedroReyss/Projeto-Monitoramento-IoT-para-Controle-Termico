@@ -1,59 +1,132 @@
-﻿@model FuncionarioViewModel
+@model FuncionarioViewModel
 @{
+    ViewData["Title"] = "Cadastro de Funcionário";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
-img {
-    border-radius: 100%;
-    object-fit: cover;
-    width: 100px;
-    height: 100px
-}
+    body {
+        background-color: #e6f4f8;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #fff;
+        padding: 40px 30px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-family: 'Audiowide', cursive;
+        font-size: 32px;
+        color: #3aa6c9;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 15px;
+    }
+
+    .btn-cobre {
+        background-color: #3aa6c9;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-family: 'Audiowide', cursive;
+        transition: background-color 0.3s ease;
+        border: none;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+        .btn-cobre:hover {
+            background-color: #3292b2;
+        }
+
+    .custom-file-input {
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    #imgPreview {
+        display: block;
+        margin: 0 auto 20px auto;
+        border-radius: 100%;
+        object-fit: cover;
+        width: 120px;
+        height: 120px;
+        border: 3px solid #3aa6c9;
+    }
+
+    .text-danger {
+        font-size: 13px;
+    }
 </style>
-<h2>Cadastro de Funcionário</h2>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Save" enctype="multipart/form-data">
-            <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
-            @if (string.IsNullOrEmpty(Model.FotoEmBase64))
-            {
-                <img id="imgPreview" src="/images/user_icon.png" class="img-responsive" width="100">
-            } else
-            {
-                <img id="imgPreview" src="data:image/jpeg;base64,@Model.FotoEmBase64" class="img-responsive" width="100">
-            }
-            <br />
-            <label for="Id" class="control-label">ID</label>
-            <input asp-for="Id" class="form-control" readonly/>
-            <span asp-validation-for="Id" class="text-danger"></span>
-            <br />
-            <label for="Nome" class="control-label">Nome</label>
-            <input asp-for="Nome" class="form-control" />
-            <span asp-validation-for="Nome" class="text-danger"></span>
-            <br />
-            <label for="Idade" class="control-label">Idade</label>
-            <input asp-for="Idade" class="form-control" />
-            <span asp-validation-for="Idade" class="text-danger"></span>
-            <br />
-            <label for="Cargo" class="control-label">Cargo</label>
-            <input asp-for="Cargo" class="form-control" />
-            <span asp-validation-for="Cargo" class="text-danger"></span>
-            <br />
-            <input type="file" name="Foto" id="Foto" onchange="exibirImagem()" class="btn btn-secondary">
-            <span asp-validation-for="Foto" class="text-danger"></span>
-            <br />
-            <input class="btn btn-primary" type="submit" value="Salvar dados" />
-            <br />
-            <span class="text-danger">@ViewBag.Erro</span>
-        </form>
-    </div>
+
+<div class="form-container">
+    <h2 class="form-title">Cadastro de Funcionário</h2>
+
+    <form asp-action="Save" enctype="multipart/form-data">
+        <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+
+        <!-- Foto Preview -->
+        @if (string.IsNullOrEmpty(Model.FotoEmBase64))
+        {
+            <img id="imgPreview" src="/images/user_icon.png" />
+        }
+        else
+        {
+            <img id="imgPreview" src="data:image/jpeg;base64,@Model.FotoEmBase64" />
+        }
+
+        <label for="Id">ID</label>
+        <input asp-for="Id" class="form-control" readonly />
+        <span asp-validation-for="Id" class="text-danger"></span>
+
+        <label for="Nome">Nome</label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+
+        <label for="Idade">Idade</label>
+        <input asp-for="Idade" class="form-control" />
+        <span asp-validation-for="Idade" class="text-danger"></span>
+
+        <label for="Cargo">Cargo</label>
+        <input asp-for="Cargo" class="form-control" />
+        <span asp-validation-for="Cargo" class="text-danger"></span>
+
+        <label for="Foto">Foto</label>
+        <input type="file" name="Foto" id="Foto" onchange="exibirImagem()" class="custom-file-input" />
+        <span asp-validation-for="Foto" class="text-danger"></span>
+
+        <input type="submit" value="Salvar Dados" class="btn-cobre" />
+        <span class="text-danger d-block text-center mt-2">@ViewBag.Erro</span>
+    </form>
 </div>
+
 <script>
-     function exibirImagem() {
-     var oFReader = new FileReader();
-     oFReader.readAsDataURL(document.getElementById("Foto").files[0]);
-     oFReader.onload = function (oFREvent) {
-     document.getElementById("imgPreview").src = oFREvent.target.result;
-     };
-     }
+    function exibirImagem() {
+        var reader = new FileReader();
+        reader.readAsDataURL(document.getElementById("Foto").files[0]);
+        reader.onload = function (e) {
+            document.getElementById("imgPreview").src = e.target.result;
+        };
+    }
 </script>
