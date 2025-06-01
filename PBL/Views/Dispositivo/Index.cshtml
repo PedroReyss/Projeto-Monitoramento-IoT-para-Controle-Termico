@@ -1,39 +1,121 @@
-﻿@model List<DispositivoViewModel>
+@model List<DispositivoViewModel>
 @{
+    ViewData["Title"] = "Listagem de Dispositivos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #f0f8fb;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn-novo {
+        margin: 20px auto;
+        display: block;
+        font-family: 'Audiowide', cursive;
+        background-color: #3aa6c9;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-novo:hover {
+            background-color: #3292b2;
+        }
+
+    table {
+        width: 95%;
+        margin: 0 auto 30px auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: white;
+    }
+
+    th {
+        background-color: #3aa6c9;
+        color: white;
+        font-family: 'Audiowide', cursive;
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn-sm {
+        margin: 2px;
+        border-radius: 6px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
 <h2>Listagem de Dispositivos</h2>
-<br />
-<a class="btn btn-info btn-sm" href="/Dispositivo/create">Novo Registro</a>
-<br />
-<br />
-<table class="table table-responsive table-hover">
-    <tr>
-        <th>Ações</th>
-        <th>Código</th>
-        <th>Apelido</th>
-        <th>ID Fiware</th>
-        <th>Nome Fiware</th>
-    </tr>
-    @foreach (var Dispositivo in Model)
-    {
-        <tr>
-            <td>
-                <a class="btn btn-success btn-sm" href="/Dispositivo/Properties?id=@Dispositivo.Id">Visualizar</a>
-                <a class="btn btn-info btn-sm" href="/Dispositivo/Edit?id=@Dispositivo.Id">Editar</a>
-                <a class="btn btn-danger btn-sm" href="javascript:apagarDispositivo(@Dispositivo.Id)">Apagar</a>
-            </td>
-            <td>@Dispositivo.Id</td>
-            <td>@Dispositivo.Apelido</td>
-            <td>@Dispositivo.DeviceId</td>
-            <td>@Dispositivo.EntityName</td>
-        </tr>
-    }
-</table>
+
+<a class="btn btn-novo" href="/Dispositivo/Create">
+    <i class="fas fa-plus-circle"></i> Novo Registro
+</a>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Ações</th>
+                <th>Código</th>
+                <th>Apelido</th>
+                <th>ID Fiware</th>
+                <th>Nome Fiware</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Dispositivo in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="/Dispositivo/Properties?id=@Dispositivo.Id">
+                            <i class="fas fa-eye"></i> Visualizar
+                        </a>
+                        <a class="btn btn-info btn-sm" href="/Dispositivo/Edit?id=@Dispositivo.Id">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="javascript:apagarDispositivo(@Dispositivo.Id)">
+                            <i class="fas fa-trash-alt"></i> Apagar
+                        </a>
+                    </td>
+                    <td>@Dispositivo.Id</td>
+                    <td>@Dispositivo.Apelido</td>
+                    <td>@Dispositivo.DeviceId</td>
+                    <td>@Dispositivo.EntityName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 <script>
-    function apagarDispositivo(id)
-    {
-    if (confirm('Confirma a exclusão do registro?'))
-    location.href = 'Dispositivo/Delete?id=' + id;
+    function apagarDispositivo(id) {
+        if (confirm('Confirma a exclusão do registro?')) {
+            location.href = '/Dispositivo/Delete?id=' + id;
+        }
     }
-</script> 
+</script>
