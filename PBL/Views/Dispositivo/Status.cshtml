@@ -1,129 +1,209 @@
 ﻿@model DispositivoViewModel
 @{
+    ViewData["Title"] = "Monitoramento de Temperatura";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Monitoramento de Temperatura</h1>
-<link rel="stylesheet" href="~/css/site.css" />
+<!-- Fontes e Estilo Visual -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="container">
-    <div class="grafico">
-        <h3>Gráfico de Temperatura</h3>
-        <canvas id="graficoTemperatura"></canvas>
-    </div>
-</div>
-
-<div>
-    <button class="btn btn-info" onclick="calibrarTemperatura()">Calibrar</button>
-    <span id="ajusteCalibracao"></span>
-    <br />
-    <button class="btn btn-warning" onclick="resetarCalibracao()">Resetar ajuste</button>
-    <br />
-</div>
-
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        text-align: center;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f0f8fb;
         padding: 20px;
+        text-align: center;
     }
 
-    
-    .grafico canvas {
-        max-height: 400px; /* Limita a altura do gráfico */
+    h1 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-bottom: 30px;
     }
-
 
     .container {
         width: 90%;
-        max-width: 800px;
+        max-width: 900px;
         margin: auto;
     }
 
     .grafico {
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    canvas {
+        max-height: 400px;
+    }
+
+    .btn {
+        margin: 10px 5px;
+        border-radius: 8px;
+    }
+
+    input[type="number"] {
+        border-radius: 8px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        width: 150px;
+    }
+
+    #ganhoAtual, #ajusteCalibracao {
+        font-weight: bold;
+        margin-top: 15px;
+        color: #333;
     }
 </style>
 
+<h1>Monitoramento de Temperatura</h1>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="container">
+    <div class="grafico">
+        <h3 style="color: #3aa6c9;">Gráfico de Temperatura</h3>
+        <canvas id="voltageChart"></canvas>
+        <div id="ganhoAtual"></div>
+    </div>
 
-<canvas id="voltageChart" width="600" height="300"></canvas>
+    <div>
+        <button class="btn btn-info" onclick="calibrarTemperatura()">
+            <i class="fas fa-thermometer-half"></i> Calibrar
+        </button>
+        <span id="ajusteCalibracao"></span>
+        <br />
+        <button class="btn btn-warning" onclick="resetarCalibracao()">
+            <i class="fas fa-sync-alt"></i> Resetar ajuste
+        </button>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <label for="setpointInput" style="font-weight: bold;">Definir Setpoint (°C):</label>
+        <input type="number" id="setpointInput" step="0.1" placeholder="Ex: 50.0" />
+        <button class="btn btn-primary" onclick="definirSetpoint()">
+            <i class="fas fa-check-circle"></i> Aplicar
+        </button>
+    </div>
+</div>
 
 <script>
-function atualizarGrafico() {
-    $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=50', function(response) {
-        // response é um array de objetos: [{data, voltagem, temperatura}, ...]
-        const labels = response.map(v => v.data);
-        const volt = response.map(v => v.voltagem);
-        const temp = response.map(v => v.temperatura);
-
-        voltageChart.data.labels = labels;
-        voltageChart.data.datasets[0].data = temp;
-        voltageChart.update();
-
-    });
-}
-const ctx = document.getElementById('voltageChart').getContext('2d');
-const voltageChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [],
-        datasets: [{
-            label: 'Tensão (V)',
-            data: [],
-            borderColor: 'blue',
-            fill: false
-        }]
-    },
-    options: {
-        scales: {
-            x: { title: { display: true, text: 'Tempo' } },
-            y: { title: { display: true, text: 'Tensão (V)' } }
+        let setpoint = 50;
+        function definirSetpoint() {
+            const input = document.getElementById("setpointInput").value;
+            const novoSetpoint = parseFloat(input);
+            if (isNaN(novoSetpoint)) {
+                alert("Digite um valor numérico válido para o setpoint.");
+            } else {
+                setpoint = novoSetpoint;
+                alert(`Setpoint definido em ${setpoint}°C`);
+                atualizarGrafico();
+            }
         }
-    }
-});
 
-
-
-// Atualiza o gráfico ao carregar e a cada 10 segundos
-atualizarGrafico();
-setInterval(atualizarGrafico, 10000);
-</script>
-
-<script>
-function calibrarTemperatura() {
-    // Pega o último valor do gráfico como temperatura calculada
-    let temperaturaReal = prompt("Informe a temperatura real (°C):");
-    if (temperaturaReal === null) return; // Cancelado
-    temperaturaReal = parseFloat(temperaturaReal.replace(",", "."));
-    if (isNaN(temperaturaReal)) {
-        alert("Digite um valor válido!");
-        return;
-    }
-    let temperaturaCalculada = voltageChart.data.datasets[0].data.slice(-1)[0];
-    $.post('/Dispositivo/CalibrarTemperatura', { temperaturaReal, temperaturaCalculada }, function(resposta) {
-        if(resposta.sucesso)
-            document.getElementById('ajusteCalibracao').textContent = "Ajuste aplicado: " + resposta.ajuste.toFixed(2) + "°C";
-        else
-            alert("Erro ao calibrar!");
+    const ctx = document.getElementById('voltageChart').getContext('2d');
+    const voltageChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Temperatura (°C)',
+                    data: [],
+                    borderColor: 'blue',
+                    fill: false
+                },
+                {
+                        
+                    label: 'Setpoint (°C)',
+                    data: [],
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    spanGaps: true, 
+                    fill: false
+    
+                },
+                {
+                    label: 'Erro (°C)',
+                    data: [],
+                    borderColor: 'red',
+                    borderDash: [10, 5],
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: { display: true, text: 'Tempo' }
+                },
+                y: {
+                    title: { display: true, text: 'Temperatura (°C)' }
+                }
+            }
+        }
     });
-}
 
-function resetarCalibracao() {
-    $.post('/Dispositivo/ResetarCalibracao', {}, function(resposta) {
-        if(resposta.sucesso)
-            document.getElementById('ajusteCalibracao').textContent = "";
-        else
-            alert("Erro ao resetar!");
-    });
-}
+        function atualizarGrafico() {
+        $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=50', function (response) {
+            const labels = response.map(v => v.data);
+            const temperaturas = response.map(v => v.temperatura);
+
+            voltageChart.data.labels = labels;
+            voltageChart.data.datasets[0].data = temperaturas;
+
+            if (setpoint !== null) {
+                const setpoints = labels.map(() => setpoint);
+                const erros = temperaturas.map(t => t - setpoint);
+                voltageChart.data.datasets[1].data = setpoints;
+                voltageChart.data.datasets[2].data = erros;
+            } else {
+                voltageChart.data.datasets[1].data = []; // esconde o setpoint se não definido
+                voltageChart.data.datasets[2].data = [];
+            }
+
+            voltageChart.update();
+
+            if (temperaturas.length >= 2) {
+                const ganho = temperaturas[temperaturas.length - 1] - temperaturas[temperaturas.length - 2];
+                document.getElementById("ganhoAtual").innerText = `Ganho atual: ${ganho.toFixed(2)}°C`;
+            }
+        });
+    }
+
+    function calibrarTemperatura() {
+        let temperaturaReal = prompt("Informe a temperatura real (°C):");
+        if (temperaturaReal === null) return;
+        temperaturaReal = parseFloat(temperaturaReal.replace(",", "."));
+        if (isNaN(temperaturaReal)) {
+            alert("Digite um valor válido!");
+            return;
+        }
+        let temperaturaCalculada = voltageChart.data.datasets[0].data.slice(-1)[0];
+        $.post('/Dispositivo/CalibrarTemperatura', { temperaturaReal, temperaturaCalculada }, function (resposta) {
+            if (resposta.sucesso)
+                document.getElementById('ajusteCalibracao').textContent = "Ajuste aplicado: " + resposta.ajuste.toFixed(2) + "°C";
+            else
+                alert("Erro ao calibrar!");
+        });
+    }
+
+    function resetarCalibracao() {
+        $.post('/Dispositivo/ResetarCalibracao', {}, function (resposta) {
+            if (resposta.sucesso)
+                document.getElementById('ajusteCalibracao').textContent = "";
+            else
+                alert("Erro ao resetar!");
+        });
+    }
+
+    atualizarGrafico();
+    setInterval(atualizarGrafico, 10000);
 </script>

@@ -199,7 +199,7 @@ namespace PBL.Controllers
 
         public IActionResult CalibrarTemperatura(double temperaturaReal, double temperaturaCalculada)
         {
-            double offset = temperaturaReal - temperaturaCalculada ;
+            double offset = temperaturaReal - temperaturaCalculada;
             SetOffsetTemperatura(offset);
             return Json(new { sucesso = true, ajuste = offset });
         }

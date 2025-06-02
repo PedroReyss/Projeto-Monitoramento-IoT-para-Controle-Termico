@@ -11,7 +11,7 @@ namespace PBL.Controllers
 {
     public static class ClienteFiware
     {
-        private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "127.0.0.1";
+        private static readonly string IP_FIWARE = Environment.GetEnvironmentVariable("FIWARE_IP") ?? "54.167.62.15";
 
         public static async Task CriarDispositivo(DispositivoViewModel model)
         {
