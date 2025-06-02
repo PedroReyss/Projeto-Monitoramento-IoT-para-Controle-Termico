@@ -92,18 +92,18 @@
 </div>
 
 <script>
-        let setpoint = 50;
-        function definirSetpoint() {
-            const input = document.getElementById("setpointInput").value;
-            const novoSetpoint = parseFloat(input);
-            if (isNaN(novoSetpoint)) {
-                alert("Digite um valor numérico válido para o setpoint.");
-            } else {
-                setpoint = novoSetpoint;
-                alert(`Setpoint definido em ${setpoint}°C`);
-                atualizarGrafico();
-            }
+    let setpoint = 50;
+    function definirSetpoint() {
+        const input = document.getElementById("setpointInput").value;
+        const novoSetpoint = parseFloat(input);
+        if (isNaN(novoSetpoint)) {
+            alert("Digite um valor numérico válido para o setpoint.");
+        } else {
+            setpoint = novoSetpoint;
+            alert(`Setpoint definido em ${setpoint}°C`);
+            atualizarGrafico();
         }
+    }
 
     const ctx = document.getElementById('voltageChart').getContext('2d');
     const voltageChart = new Chart(ctx, {
@@ -118,16 +118,16 @@
                     fill: false
                 },
                 {
-                        
+
                     label: 'Setpoint (°C)',
                     data: [],
                     borderColor: 'green',
                     borderWidth: 2,
                     borderDash: [5, 5],
                     pointRadius: 0,
-                    spanGaps: true, 
+                    spanGaps: true,
                     fill: false
-    
+
                 },
                 {
                     label: 'Erro (°C)',
@@ -151,8 +151,8 @@
         }
     });
 
-        function atualizarGrafico() {
-        $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=50', function (response) {
+    function atualizarGrafico() {
+        $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=100', function (response) {
             const labels = response.map(v => v.data);
             const temperaturas = response.map(v => v.temperatura);
 
@@ -187,7 +187,7 @@
             return;
         }
         let temperaturaCalculada = voltageChart.data.datasets[0].data.slice(-1)[0];
-        $.post('/Dispositivo/CalibrarTemperatura', { temperaturaReal, temperaturaCalculada }, function (resposta) {
+        $.post('/Dispositivo/CalibrarTemperatura?temperaturaReal=' + temperaturaReal + '&temperaturaCalculada=' + temperaturaCalculada, {}, function (resposta) {
             if (resposta.sucesso)
                 document.getElementById('ajusteCalibracao').textContent = "Ajuste aplicado: " + resposta.ajuste.toFixed(2) + "°C";
             else
@@ -205,5 +205,5 @@
     }
 
     atualizarGrafico();
-    setInterval(atualizarGrafico, 10000);
+    setInterval(atualizarGrafico, 5000);
 </script>

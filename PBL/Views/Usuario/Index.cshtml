@@ -1,44 +1,120 @@
 ﻿@model List<UsuarioViewModel>
 @{
+    ViewData["Title"] = "Listagem de Usuários";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #f0f8fb;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn-novo {
+        margin: 20px auto;
+        display: block;
+        font-family: 'Audiowide', cursive;
+        background-color: #3aa6c9;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-novo:hover {
+            background-color: #3292b2;
+        }
+
+    table {
+        width: 95%;
+        margin: 0 auto 30px auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: white;
+    }
+
+    th {
+        background-color: #3aa6c9;
+        color: white;
+        font-family: 'Audiowide', cursive;
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn-sm {
+        margin: 2px;
+        border-radius: 6px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
 <h2>Listagem de Usuários</h2>
-<br />
-<a class="btn btn-info btn-sm" href="/Usuario/create">Novo Registro</a>
-<br />
-<br />
-<table class="table table-responsive table-hover">
-    <tr>
-        <th>Ações</th>
-        <th>Código</th>
-        <th>Funcionário</th>
-        <th>Tipo</th>
-        <th>Username</th>
-    </tr>
-    @foreach (var Usuario in Model)
-    {
-        <tr>
-            <td>
-                <a class="btn btn-info btn-sm" href="/Usuario/Edit?id=@Usuario.Id">Editar</a>
-                <a class="btn btn-danger btn-sm" href="javascript:apagarUsuario(@Usuario.Id)">Apagar</a>
-            </td>
-            <td>@Usuario.Id</td>
-            <td>@Usuario.NomeFuncionario</td>
-            @if (Usuario.Tipo == 1)
+
+<a class="btn btn-novo" href="/Usuario/Create">
+    <i class="fas fa-plus-circle"></i> Novo Registro
+</a>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Ações</th>
+                <th>Código</th>
+                <th>Funcionário</th>
+                <th>Tipo</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Usuario in Model)
             {
-                <td>Administrador</td>
-            } else if (Usuario.Tipo == 2)
-            {
-                <td>Comum</td>
+                <tr>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="/Usuario/Edit?id=@Usuario.Id">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="javascript:apagarUsuario(@Usuario.Id)">
+                            <i class="fas fa-trash-alt"></i> Apagar
+                        </a>
+                    </td>
+                    <td>@Usuario.Id</td>
+                    <td>@Usuario.NomeFuncionario</td>
+                    <td>
+                        @(Usuario.Tipo == 1 ? "Administrador" : Usuario.Tipo == 2 ? "Comum" : "Desconhecido")
+                    </td>
+                    <td>@Usuario.Username</td>
+                </tr>
             }
-            <td>@Usuario.Username</td>
-        </tr>
-    }
-</table>
+        </tbody>
+    </table>
+</div>
+
 <script>
-    function apagarUsuario(id)
-    {
-    if (confirm('Confirma a exclusão do registro?'))
-    location.href = 'Usuario/Delete?id=' + id;
+    function apagarUsuario(id) {
+        if (confirm('Confirma a exclusão do registro?')) {
+            location.href = '/Usuario/Delete?id=' + id;
+        }
     }
-</script> 
+</script>

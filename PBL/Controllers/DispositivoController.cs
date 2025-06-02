@@ -199,7 +199,7 @@ namespace PBL.Controllers
 
         public IActionResult CalibrarTemperatura(double temperaturaReal, double temperaturaCalculada)
         {
-            double offset = temperaturaReal - temperaturaCalculada;
+            double offset = temperaturaReal - temperaturaCalculada ;
             SetOffsetTemperatura(offset);
             return Json(new { sucesso = true, ajuste = offset });
         }
@@ -212,15 +212,12 @@ namespace PBL.Controllers
 
         private double GetOffsetTemperatura()
         {
-            var valor = HttpContext.Session.GetString("offset");
-            if (double.TryParse(valor, out var offset))
-                return offset;
-            return 0;
+            return offsetTemperatura;
         }
 
         private void SetOffsetTemperatura(double valor)
         {
-            HttpContext.Session.SetString("offset", valor.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            offsetTemperatura = valor;
         }
 
         private double ConverterAnalogReadParaVolt(int analogRead)
@@ -233,7 +230,8 @@ namespace PBL.Controllers
         {
             // usar aqui a função da regressão linear descoberta experimentalmente
             double temperatura = (voltagem + 0.023853851) / 0.099411327;
-            return temperatura + GetOffsetTemperatura();
+            double offset = GetOffsetTemperatura();
+            return temperatura + offset;
         }
 
     }
