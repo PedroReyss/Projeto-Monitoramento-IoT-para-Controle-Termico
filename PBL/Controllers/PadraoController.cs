@@ -126,7 +126,7 @@ namespace PBL.Controllers
             else
             {
                 ViewBag.Logado = true;
-                ViewBag.Tipo = HttpContext.Session.GetInt32("User");
+                ViewBag.Tipo = HttpContext.Session.GetInt32("Tipo");
                 base.OnActionExecuting(context);
             }
         }

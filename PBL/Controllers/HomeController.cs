@@ -14,11 +14,15 @@ namespace PBL.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Logado = HelperControllers.UserEstaLogado(HttpContext.Session);
+            ViewBag.Tipo = HttpContext.Session.GetInt32("Tipo");
             return View();
         }
 
         public IActionResult Sobre()
         {
+            ViewBag.Logado = HelperControllers.UserEstaLogado(HttpContext.Session);
+            ViewBag.Tipo = HttpContext.Session.GetInt32("Tipo");
             return View();
         }
     }

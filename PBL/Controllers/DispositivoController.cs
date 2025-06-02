@@ -201,7 +201,7 @@ namespace PBL.Controllers
         {
             double offset = temperaturaCalculada - temperaturaReal;
             SetOffsetTemperatura(offset);
-            return Json(new { sucesso = true, ajuste = offsetTemperatura });
+            return Json(new { sucesso = true, ajuste = offset });
         }
         
         public IActionResult ResetarCalibracao()
@@ -232,8 +232,8 @@ namespace PBL.Controllers
         private double CalcularTemperatura(double voltagem)
         {
             // usar aqui a função da regressão linear descoberta experimentalmente
-            double temperatura = ((voltagem + 0.023853851) / 0.099411327);
-            return temperatura - offsetTemperatura;
+            double temperatura = (voltagem + 0.023853851) / 0.099411327;
+            return temperatura - GetOffsetTemperatura();
         }
 
     }

@@ -32,7 +32,12 @@ namespace PBL.Controllers
         public static Boolean UserEhAdmin(ISession session)
         {
             return session.GetInt32("Tipo") == (int)TipoEnum.Administrador;
-        } 
+        }
+
+        public static Boolean AdminEstaLogado(ISession session)
+        {
+            return UserEstaLogado(session) && UserEhAdmin(session);
+        }
 
         
     }

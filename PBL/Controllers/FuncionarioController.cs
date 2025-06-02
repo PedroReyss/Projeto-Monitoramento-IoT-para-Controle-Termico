@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PBL.DAO;
 using PBL.Models;
@@ -54,5 +55,16 @@ namespace PBL.Controllers
                 return null;
         }
 
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (ExigeAutenticacao && !HelperControllers.AdminEstaLogado(HttpContext.Session))
+                context.Result = RedirectToAction("Login", "Usuario");
+            else
+            {
+                ViewBag.Logado = true;
+                ViewBag.Tipo = HttpContext.Session.GetInt32("Tipo");
+                base.OnActionExecuting(context);
+            }
+        }
     }
 }

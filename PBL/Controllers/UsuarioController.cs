@@ -19,7 +19,7 @@ namespace PBL.Controllers
 
         public override IActionResult Index()
         {
-            if (HelperControllers.UserEstaLogado(HttpContext.Session))
+            if (HelperControllers.UserEhAdmin(HttpContext.Session))
                 return base.Index();
             else
                 return View("Login");
@@ -49,7 +49,7 @@ namespace PBL.Controllers
         {
             try
             {
-                if (HelperControllers.UserEstaLogado(HttpContext.Session))
+                if (HelperControllers.UserEhAdmin(HttpContext.Session))
                 {
                     ViewBag.Operacao = "I";
                     UsuarioViewModel model = new UsuarioViewModel();
@@ -79,12 +79,12 @@ namespace PBL.Controllers
         {
             try
             {
-                if (HelperControllers.UserEstaLogado(HttpContext.Session))
+                if (HelperControllers.UserEhAdmin(HttpContext.Session))
                 {
                     ViewBag.Operacao = "A";
                     var model = DAO.Consulta(id);
                     PreparaListaFuncionariosParaCombo();
-                    if (model == null || !HelperControllers.UserEhAdmin(HttpContext.Session))
+                    if (model == null)
                         return RedirectToAction(NomeViewIndex);
                     else
                     {
@@ -107,21 +107,28 @@ namespace PBL.Controllers
         {
             try
             {
-                ValidaDados(model, Operacao);
-                if (ModelState.IsValid == false)
+                if (HelperControllers.UserEhAdmin(HttpContext.Session))
                 {
-                    ViewBag.Operacao = Operacao;
-                    PreencheDadosParaView(Operacao, model);
-                    PreparaListaFuncionariosParaCombo();
-                    return View(NomeViewForm, model);
+                    ValidaDados(model, Operacao);
+                    if (ModelState.IsValid == false)
+                    {
+                        ViewBag.Operacao = Operacao;
+                        PreencheDadosParaView(Operacao, model);
+                        PreparaListaFuncionariosParaCombo();
+                        return View(NomeViewForm, model);
+                    }
+                    else
+                    {
+                        if (Operacao == "I")
+                            DAO.Insert(model);
+                        else
+                            DAO.Update(model);
+                        return RedirectToAction(NomeViewIndex);
+                    }
                 }
                 else
                 {
-                    if (Operacao == "I")
-                        DAO.Insert(model);
-                    else
-                        DAO.Update(model);
-                    return RedirectToAction(NomeViewIndex);
+                    return View("Login");
                 }
             }
             catch (Exception erro)
