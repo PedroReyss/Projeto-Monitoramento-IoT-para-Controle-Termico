@@ -67,12 +67,9 @@ function atualizarGrafico() {
         const temp = response.map(v => v.temperatura);
 
         voltageChart.data.labels = labels;
-        voltageChart.data.datasets[0].data = data;
+        voltageChart.data.datasets[0].data = temp;
         voltageChart.update();
 
-        graficoTemperatura.data.labels = labels;
-        graficoTemperatura.data.datasets[0].data = data;
-        graficoTemperatura.update();
     });
 }
 const ctx = document.getElementById('voltageChart').getContext('2d');
@@ -95,6 +92,8 @@ const voltageChart = new Chart(ctx, {
     }
 });
 
+
+
 // Atualiza o gráfico ao carregar e a cada 10 segundos
 atualizarGrafico();
 setInterval(atualizarGrafico, 10000);
@@ -107,12 +106,12 @@ function calibrarTemperatura() {
     if (temperaturaReal === null) return; // Cancelado
     temperaturaReal = parseFloat(temperaturaReal.replace(",", "."));
     if (isNaN(temperaturaReal)) {
-        document.getElementById('ajusteCalibracao').textContent = "Digite a temperatura real!";
+        alert("Digite um valor válido!");
         return;
     }
     let temperaturaCalculada = voltageChart.data.datasets[0].data.slice(-1)[0];
     $.post('/Dispositivo/CalibrarTemperatura', { temperaturaReal, temperaturaCalculada }, function(resposta) {
-        if(!resposta.sucesso)
+        if(resposta.sucesso)
             document.getElementById('ajusteCalibracao').textContent = "Ajuste aplicado: " + resposta.ajuste.toFixed(2) + "°C";
         else
             alert("Erro ao calibrar!");
@@ -124,7 +123,7 @@ function resetarCalibracao() {
         if(resposta.sucesso)
             document.getElementById('ajusteCalibracao').textContent = "";
         else
-            alert("Erro ao calibrar!");
+            alert("Erro ao resetar!");
     });
 }
 </script>
