@@ -3,9 +3,9 @@
 Implementação de um sistema de acompanhamento térmico com base no controle e análise de dados medidos e calculados de um Kit Térmico.
 
 ## Quem somos?
-  A CoolerCopper é uma empresa inovadora dedicada ao desenvolvimento de sistemas de <strong>secagem de motor</strong> com foco em praticidade, eficiência e acessibilidade. Nossa missão é fornecer soluções tecnológicas acessíveis que garantam o bom funcionamento e a durabilidade dos motores, mesmo nas condições mais desafiadoras.
+  A CoolerCopper é uma empresa inovadora dedicada ao desenvolvimento de sistemas de <strong>secagem de motor com foco em praticidade, eficiência e acessibilidade. Nossa missão é fornecer soluções tecnológicas acessíveis que garantam o bom funcionamento e a durabilidade dos motores, mesmo nas condições mais desafiadoras.
 
-Nosso principal objetivo é criar sistemas de secagem de motores que sejam fáceis de instalar, de baixo custo e que utilizem materiais confiáveis. Incorporamos também sistemas de monitoramento que permitem o acompanhamento em tempo real da temperatura e do status do motor, oferecendo tranquilidade e segurança ao usuário.
+  Nosso principal objetivo é criar sistemas de secagem de motores que sejam fáceis de instalar, de baixo custo e que utilizem materiais confiáveis. Incorporamos também sistemas de monitoramento que permitem o acompanhamento em tempo real da temperatura e do status do motor, oferecendo tranquilidade e segurança ao usuário.
   
 ## Participantes
 Gabriel Melo Santos – 081230044
@@ -13,7 +13,6 @@ Henrique Alves Ferreira – 081230015
 Matheus da Silva Souza – 081230011
 Pedro Henrique Simões Reys – 081230022
 Rafael Rupert Barrocal – 081230002
-![image](https://github.com/user-attachments/assets/09e089ab-0229-4251-9ffd-ce4e556d4f6b)
 
 
 ## 🛠️ Tecnologias Utilizadas
