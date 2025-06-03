@@ -25,6 +25,8 @@ Rafael Rupert Barrocal – 081230002
   - IoT (Internet das Coisas)
   - Configurações por JSON
   
+![Texto alternativo](https://cefsaedu-my.sharepoint.com/personal/081230022_faculdade_cefsa_edu_br/_layouts/15/onedrive.aspx?id=%2Fpersonal%2F081230022%5Ffaculdade%5Fcefsa%5Fedu%5Fbr%2FDocuments%2FAnexos%2FDiagrama%2Ejpg&parent=%2Fpersonal%2F081230022%5Ffaculdade%5Fcefsa%5Fedu%5Fbr%2FDocuments%2FAnexos&ct=1748909269375&or=OWA%2DNT%2DMail&cid=e0ecfa32%2Dadae%2D25a7%2Dd932%2D4ce81097c2ed&ga=1&ls=true)
+
 
 ## 🚀 Funcionalidades
 
@@ -35,5 +37,7 @@ Rafael Rupert Barrocal – 081230002
 - APIs para acesso aos dados de forma estruturada.
 - Armazenamento de histórico de temperaturas medidas.
 - Armazenamento e administração de Usuários e sistemas térmicos.
+
+
 
 
