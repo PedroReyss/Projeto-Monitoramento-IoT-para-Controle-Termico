@@ -25,7 +25,7 @@ Rafael Rupert Barrocal – 081230002
   - IoT (Internet das Coisas)
   - Configurações por JSON
   
-![Diagrama](blob:https://cefsaedu-my.sharepoint.com/a7f64a87-e5ed-4fab-87dc-0715efe7cee2)
+![Diagrama](https://cefsaedu-my.sharepoint.com/a7f64a87-e5ed-4fab-87dc-0715efe7cee2)
 
 
 ## 🚀 Funcionalidades
