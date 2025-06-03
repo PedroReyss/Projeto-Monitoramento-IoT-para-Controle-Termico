@@ -33,7 +33,7 @@ Garantimos **tranquilidade e segurança** para o usuário.
 
 ## 🧩 Arquitetura do Sistema
 
-![Diagrama da arquitetura de comunicação](https://cefsaedu-my.sharepoint.com/4a58c674-a38b-4ce4-b9d5-62f5740da41d)  
+![Diagrama da arquitetura de comunicação](PBL/wwwroot/images/Diagrama.jpg)  
 *Diagrama da arquitetura de comunicação entre o sensor IoT, plataforma de controle, FIWARE e a aplicação ASP.NET hospedada na AWS.*
 
 ---
