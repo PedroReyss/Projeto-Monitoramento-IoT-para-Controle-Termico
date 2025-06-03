@@ -134,19 +134,6 @@ Isso garante:
 | MongoDB                | Banco NoSQL utilizado para persistência dos dados                      |
 | NGSI (JSON)            | Protocolo de comunicação entre os componentes FIWARE                   |
 
-**Fluxo de Dados:**
-
-```plaintext
-[ESP32 com Sensor] 
-    ↓ MQTT 
-[IoT Agent / Broker] 
-    ↓ NGSI
-[FIWARE Orion Context Broker] 
-    ↓ NGSI
-[STH-Comet + MongoDB]
-    ↓ REST API
-[Sistema Web ASP.NET MVC → Dashboards / CRUD / Histórico]
-
 
 ## 📚 Disciplinas Envolvidas
 
