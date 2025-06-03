@@ -66,7 +66,6 @@ Desenvolver um **sistema de monitoramento térmico IoT** para estufas utilizadas
 | **FIWARE (Orion/Comet)** | Backend IoT, gerenciamento e histórico de contexto |
 | **Docker + AWS**       | Hospedagem em nuvem do ambiente FIWARE         |
 | **HTML5 / CSS / JS / AJAX** | Front-end responsivo e interativo         |
-| **MongoDB**            | Armazenamento de dados históricos no FIWARE     |
 | **JSON / NGSI v2**     | Formato e padrão de troca de dados              |
 
 ---
