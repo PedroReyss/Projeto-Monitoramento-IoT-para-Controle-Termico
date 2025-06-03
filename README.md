@@ -112,7 +112,6 @@ A plataforma **Amazon Web Services (AWS)** foi utilizada para hospedar o ambient
 
 - Orion Context Broker
 - STH-Comet
-- MongoDB
 - IoT Agent (opcional)
 
 Isso garante:
