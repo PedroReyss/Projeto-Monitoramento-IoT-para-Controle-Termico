@@ -1,0 +1,209 @@
+﻿@model DispositivoViewModel
+@{
+    ViewData["Title"] = "Monitoramento de Temperatura";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Fontes e Estilo Visual -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f0f8fb;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-bottom: 30px;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .grafico {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    canvas {
+        max-height: 400px;
+    }
+
+    .btn {
+        margin: 10px 5px;
+        border-radius: 8px;
+    }
+
+    input[type="number"] {
+        border-radius: 8px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        width: 150px;
+    }
+
+    #ganhoAtual, #ajusteCalibracao {
+        font-weight: bold;
+        margin-top: 15px;
+        color: #333;
+    }
+</style>
+
+<h1>Monitoramento de Temperatura</h1>
+
+<div class="container">
+    <div class="grafico">
+        <h3 style="color: #3aa6c9;">Gráfico de Temperatura</h3>
+        <canvas id="voltageChart"></canvas>
+        <div id="ganhoAtual"></div>
+    </div>
+
+    <div>
+        <button class="btn btn-info" onclick="calibrarTemperatura()">
+            <i class="fas fa-thermometer-half"></i> Calibrar
+        </button>
+        <span id="ajusteCalibracao"></span>
+        <br />
+        <button class="btn btn-warning" onclick="resetarCalibracao()">
+            <i class="fas fa-sync-alt"></i> Resetar ajuste
+        </button>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <label for="setpointInput" style="font-weight: bold;">Definir Setpoint (°C):</label>
+        <input type="number" id="setpointInput" step="0.1" placeholder="Ex: 50.0" />
+        <button class="btn btn-primary" onclick="definirSetpoint()">
+            <i class="fas fa-check-circle"></i> Aplicar
+        </button>
+    </div>
+</div>
+
+<script>
+    let setpoint = 50;
+    function definirSetpoint() {
+        const input = document.getElementById("setpointInput").value;
+        const novoSetpoint = parseFloat(input);
+        if (isNaN(novoSetpoint)) {
+            alert("Digite um valor numérico válido para o setpoint.");
+        } else {
+            setpoint = novoSetpoint;
+            alert(`Setpoint definido em ${setpoint}°C`);
+            atualizarGrafico();
+        }
+    }
+
+    const ctx = document.getElementById('voltageChart').getContext('2d');
+    const voltageChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Temperatura (°C)',
+                    data: [],
+                    borderColor: 'blue',
+                    fill: false
+                },
+                {
+
+                    label: 'Setpoint (°C)',
+                    data: [],
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    spanGaps: true,
+                    fill: false
+
+                },
+                {
+                    label: 'Erro (°C)',
+                    data: [],
+                    borderColor: 'red',
+                    borderDash: [10, 5],
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: { display: true, text: 'Tempo' }
+                },
+                y: {
+                    title: { display: true, text: 'Temperatura (°C)' }
+                }
+            }
+        }
+    });
+
+    function atualizarGrafico() {
+        $.get('/Dispositivo/ReceberDadosOrion?id=@Model.Id&lastN=100', function (response) {
+            const labels = response.map(v => v.data);
+            const temperaturas = response.map(v => v.temperatura);
+
+            voltageChart.data.labels = labels;
+            voltageChart.data.datasets[0].data = temperaturas;
+
+            if (setpoint !== null) {
+                const setpoints = labels.map(() => setpoint);
+                const erros = temperaturas.map(t => t - setpoint);
+                voltageChart.data.datasets[1].data = setpoints;
+                voltageChart.data.datasets[2].data = erros;
+            } else {
+                voltageChart.data.datasets[1].data = []; // esconde o setpoint se não definido
+                voltageChart.data.datasets[2].data = [];
+            }
+
+            voltageChart.update();
+
+            if (temperaturas.length >= 2) {
+                const ganho = temperaturas[temperaturas.length - 1] - temperaturas[temperaturas.length - 2];
+                document.getElementById("ganhoAtual").innerText = `Ganho atual: ${ganho.toFixed(2)}°C`;
+            }
+        });
+    }
+
+    function calibrarTemperatura() {
+        let temperaturaReal = prompt("Informe a temperatura real (°C):");
+        if (temperaturaReal === null) return;
+        temperaturaReal = parseFloat(temperaturaReal.replace(",", "."));
+        if (isNaN(temperaturaReal)) {
+            alert("Digite um valor válido!");
+            return;
+        }
+        let temperaturaCalculada = voltageChart.data.datasets[0].data.slice(-1)[0];
+        $.post('/Dispositivo/CalibrarTemperatura?temperaturaReal=' + temperaturaReal + '&temperaturaCalculada=' + temperaturaCalculada, {}, function (resposta) {
+            if (resposta.sucesso)
+                document.getElementById('ajusteCalibracao').textContent = "Ajuste aplicado: " + resposta.ajuste.toFixed(2) + "°C";
+            else
+                alert("Erro ao calibrar!");
+        });
+    }
+
+    function resetarCalibracao() {
+        $.post('/Dispositivo/ResetarCalibracao', {}, function (resposta) {
+            if (resposta.sucesso)
+                document.getElementById('ajusteCalibracao').textContent = "";
+            else
+                alert("Erro ao resetar!");
+        });
+    }
+
+    atualizarGrafico();
+    setInterval(atualizarGrafico, 5000);
+</script>

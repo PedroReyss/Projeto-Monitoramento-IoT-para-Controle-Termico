@@ -1,0 +1,104 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Consulta FIWARE";
+}
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #f0f8fb;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #areaFiltro {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #d6e7ee;
+    }
+
+    #areaFiltro legend {
+        font-size: 24px;
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        padding: 10px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 1px solid #ced4da;
+        margin-bottom: 10px;
+    }
+
+    #btnFiltro {
+        padding: 10px 16px;
+        font-weight: bold;
+        font-family: 'Audiowide', cursive;
+        background-color: #3aa6c9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+
+    #btnFiltro:hover {
+        background-color: #3292b2;
+    }
+
+    .table-responsive {
+        margin-top: 40px;
+        padding: 20px;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+ 
+</style>
+
+<fieldset id="areaFiltro" class="form-group">
+    <div class="row gx-3 gy-2">
+        <legend><i class="fa-solid fa-filter"></i> Consulta dos dispositivos no FIWARE</legend>
+        <div class="col-lg-3 col-md-6">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" class="form-control" placeholder="Nome do dispositivo" />
+        </div>
+        <div class="col-lg-2 col-md-6">
+            <label for="valorMenor">Temperatura mín.</label>
+            <input type="number" id="valorMenor" class="form-control" placeholder="Mínima" />
+        </div>
+        <div class="col-lg-2 col-md-6">
+            <label for="valorMaior">Temperatura máx.</label>
+            <input type="number" id="valorMaior" class="form-control" placeholder="Máxima" />
+        </div>
+        <div class="col-lg-2 col-md-6">
+            <label for="dataInicial">Data inicial</label>
+            <input type="date" id="dataInicial" class="form-control" />
+        </div>
+        <div class="col-lg-2 col-md-6">
+            <label for="dataFinal">Data final</label>
+            <input type="date" id="dataFinal" class="form-control" />
+        </div>
+        <div class="col-lg-3 col-md-6 d-grid align-items-end">
+            <label class="invisible">Aplicar</label>
+            <button type="button" id="btnFiltro" onclick="aplicarFiltroConsulta()">
+                <i class="fa-solid fa-filter"></i> Aplicar
+            </button>
+        </div>
+    </div>
+</fieldset>
+
+<div id="resultadoConsulta" class="table-responsive">
+    <!-- Resultado da consulta vai aqui -->
+</div>

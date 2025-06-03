@@ -1,0 +1,105 @@
+@model DispositivoViewModel
+@{
+    ViewData["Title"] = "Cadastro de Dispositivo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #f0f8fb;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 30px auto;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        background-color: #3aa6c9;
+        border: none;
+        font-family: 'Audiowide', cursive;
+        font-weight: bold;
+        margin-top: 20px;
+        border-radius: 8px;
+        padding: 10px 20px;
+    }
+
+        .btn-primary:hover {
+            background-color: #3292b2;
+        }
+
+    .text-danger {
+        font-size: 0.9em;
+    }
+</style>
+
+<h2>Cadastro de Dispositivo</h2>
+
+<div class="form-container">
+    <form asp-action="Save" enctype="multipart/form-data">
+        <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+
+        <div class="form-group">
+            <label for="Id">ID</label>
+            <input asp-for="Id" class="form-control" readonly />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Apelido">Apelido do Dispositivo</label>
+            <input asp-for="Apelido" class="form-control" />
+            <span asp-validation-for="Apelido" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="DeviceId">ID no Fiware</label>
+            @if (ViewBag.Operacao == "I")
+            {
+                <input asp-for="DeviceId" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="DeviceId" class="form-control" readonly />
+            }
+            <span asp-validation-for="DeviceId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="EntityName">Nome no Fiware</label>
+            <input asp-for="EntityName" class="form-control" />
+            <span asp-validation-for="EntityName" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Salvar dados
+        </button>
+
+        <span class="text-danger d-block mt-2">@ViewBag.Erro</span>
+    </form>
+</div>

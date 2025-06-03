@@ -1,0 +1,224 @@
+@{
+    ViewData["Title"] = "Sobre";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Exile&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    body {
+        background-color: #e6f4f8;
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
+    .fonte-exile {
+        font-family: 'Exile', serif;
+    }
+
+    .fonte-bungee {
+        font-family: 'Bungee Shade', cursive;
+    }
+
+    .audiowide-regular {
+        font-family: "Audiowide", sans-serif;
+    }
+
+    .copper-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px 30px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .copper-title {
+        font-size: 42px;
+        color: #3aa6c9;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        font-family: 'Bungee Shade', cursive;
+    }
+
+    .separator {
+        width: 180px;
+        height: 5px;
+        background-color: #3aa6c9;
+        margin: 0 auto 30px auto;
+        border-radius: 2px;
+    }
+
+    .copper-subtitle {
+        text-align: justify;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        color: #444;
+    }
+
+    .copper-sa {
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        color: #444;
+    }
+
+    .btn-cobre {
+        background-color: #3aa6c9;
+        color: white;
+        padding: 12px 20px;
+        margin: 0 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        font-family: "Audiowide", sans-serif;
+    }
+
+        .btn-cobre:hover {
+            background-color: #3292b2;
+        }
+
+    .highlights-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 25px;
+    }
+
+    .highlight-box {
+        flex: 1;
+        min-width: 260px;
+        background-color: #fefefe;
+        border: 1px solid #d6e7ee;
+        border-radius: 12px;
+        padding: 24px 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .highlight-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .highlight-box.no-hover:hover {
+            transform: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+        }
+
+    .highlight-icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+        color: #3aa6c9;
+    }
+
+    .highlight-box h5 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #3aa6c9;
+        font-weight: bold;
+        font-family: "Audiowide", sans-serif;
+    }
+
+    .highlight-text {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+
+    h5 {
+        font-family: "Audiowide", sans-serif;
+    }
+</style>
+<div class="copper-container">
+
+    <h1 class="copper-title text-center">Sobre a CoolerCopper</h1>
+    <div class="separator"></div>
+
+    <section class="mb-5">
+        <h2 class="section-title audiowide-regular">Quem Somos?🤔</h2>
+        <div class="highlight-box">
+            <p class="highlight-text">
+                A <strong>CoolerCopper</strong> é uma empresa inovadora dedicada ao desenvolvimento de sistemas de <strong>secagem de motor</strong> com foco em praticidade, eficiência e acessibilidade. Nossa missão é fornecer soluções tecnológicas acessíveis que garantam o bom funcionamento e a durabilidade dos motores, mesmo nas condições mais desafiadoras.
+                <br /><br />
+                <strong>EQUIPE:</strong><br />
+                Rafael Rupert Barrocal - 081230002
+                <br />
+                Matheus da Silva Souza - 081230011
+                <br />
+                Henrique Alves Ferreira - 081230015
+                <br />
+                Pedro Henrique Simões Reys  081230022
+                <br />
+                Gabriel Melo Santos - 081230044
+                <br />
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="section-title audiowide-regular">Nossa Proposta!</h2>
+        <div class="highlight-box">
+            <p class="highlight-text">
+                Nosso principal objetivo é criar <strong>sistemas de secagem de motores</strong> que sejam fáceis de instalar, de baixo custo e que utilizem materiais confiáveis. Incorporamos também sistemas de monitoramento que permitem o acompanhamento em tempo real da <strong>temperatura</strong> e do <strong>status do motor</strong>, oferecendo tranquilidade e segurança ao usuário.
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-5 text-center">
+        <h2 class="section-title audiowide-regular">Arquitetura do Sistema</h2>
+        <div class="highlight-box no-hover">
+            <img src="~/images/Diagrama.jpg" alt="Esquema estrutural do projeto IoT" class="img-fluid rounded shadow-sm" />
+            <p class="highlight-text mt-3">Diagrama da arquitetura de comunicação entre o sensor IoT, plataforma de controle, FIWARE e a aplicação ASP.NET hospedada na AWS.</p>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="section-title audiowide-regular">Diferenciais da CoolerCopper 💡</h2>
+        <div class="highlights-container">
+            <div class="highlight-box">
+                <div class="highlight-icon">✅</div>
+                <p class="highlight-text">Soluções simples e funcionais</p>
+            </div>
+            <div class="highlight-box">
+                <div class="highlight-icon">💰</div>
+                <p class="highlight-text">Foco em custo-benefício</p>
+            </div>
+            <div class="highlight-box">
+                <div class="highlight-icon">📈</div>
+                <p class="highlight-text">Monitoramento confiável do motor em tempo real</p>
+            </div>
+            <div class="highlight-box">
+                <div class="highlight-icon">🔧</div>
+                <p class="highlight-text">Instalação prática e manutenção mínima</p>
+            </div>
+            <div class="highlight-box">
+                <div class="highlight-icon">📡</div>
+                <p class="highlight-text">Integração com sistemas de alerta e diagnóstico</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title audiowide-regular">Entre em Contato! 📩</h2>
+        <div class="highlight-box text-center">
+            <p class="highlight-text">
+                Quer saber mais sobre nossos produtos ou soluções para sua empresa? Fale com a gente! Estamos prontos para levar inovação até você.
+            </p>
+            <a href="mailto:contato@coolercopper.com" style="color: #3aa6c9; font-weight:bold" class="link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mt-3">
+                <i class="fa-solid fa-envelope"></i> Enviar E-mail
+            </a>
+        </div>
+    </section>
+
+</div>
+
+<br />
+<br />

@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<fieldset id="areaFiltro" class="form-group">
+    <legend>Consulta avançada de funcionários</legend>
+    <div class="row">
+        <div class="col-lg-4">
+            Nome<br />
+            <input type="text" id="Nome" class="form-control" />
+        </div>
+        <div class="col-lg-3">
+            Categoria <br />
+            <select id="Tipo" class="form-control" asp-items="@ViewBag.Categorias"></select>
+        </div>
+        <div class="col-lg-2">
+            Período <br />
+            <input type="date" id="dataInicial" class="form-control" />
+        </div>
+        <div class="col-lg-2">
+            <br />
+            <input type="date" id="dataFinal" class="form-control" />
+        </div>
+        <div class="col-lg-1">
+            <br />
+            <input type="button" id="btnFiltro" class="btn btn-success" value="Aplicar"
+                   onclick="aplicaFiltroConsultaAvancada()" />
+        </div>
+    </div>
+</fieldset>
+
+<div id="resultadoConsulta" class="table-responsive">
+</div>

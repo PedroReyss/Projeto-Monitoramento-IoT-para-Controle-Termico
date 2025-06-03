@@ -1,0 +1,109 @@
+﻿@using PBL.Enum
+@model UsuarioViewModel
+@{
+    ViewData["Title"] = "Cadastro de Usuário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #f0f8fb;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Audiowide', cursive;
+        color: #3aa6c9;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .form-container {
+        background-color: white;
+        width: 90%;
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    .btn-salvar {
+        background-color: #3aa6c9;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-salvar:hover {
+            background-color: #3292b2;
+        }
+
+    .text-danger {
+        font-size: 0.9em;
+    }
+</style>
+
+<h2>Cadastro de Usuário</h2>
+
+<div class="form-container">
+    <form asp-action="Save">
+        <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+
+        <label for="Id">ID</label>
+        <input asp-for="Id" class="form-control" readonly />
+        <span asp-validation-for="Id" class="text-danger"></span>
+
+        <label for="IdPessoa">Funcionário</label>
+        @if (ViewBag.Operacao == "I")
+        {
+            <select asp-for="IdPessoa" asp-items="ViewBag.Funcionarios" class="form-control"></select>
+        }
+        else
+        {
+            <select asp-for="IdPessoa" asp-items="ViewBag.Funcionarios" class="form-control" readonly></select>
+        }
+        <span asp-validation-for="IdPessoa" class="text-danger"></span>
+
+        <label for="Tipo">Tipo de Usuário</label>
+        <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<TipoEnum>()" class="form-control"></select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+
+        <label for="Username">Username</label>
+        @if (ViewBag.Operacao == "I")
+        {
+            <input asp-for="Username" class="form-control" />
+        }
+        else
+        {
+            <input asp-for="Username" class="form-control" readonly />
+        }
+        <span asp-validation-for="Username" class="text-danger"></span>
+
+        <label for="Senha">Senha do Usuário</label>
+        <input asp-for="Senha" class="form-control" />
+        <span asp-validation-for="Senha" class="text-danger"></span>
+
+        <input class="btn btn-salvar" type="submit" value="Salvar dados" />
+        <br />
+        <span class="text-danger">@ViewBag.Erro</span>
+    </form>
+</div>

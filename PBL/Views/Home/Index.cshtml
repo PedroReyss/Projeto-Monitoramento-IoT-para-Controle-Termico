@@ -1,0 +1,186 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Exile&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    body {
+        background-color: #e6f4f8;
+        font-family: 'Roboto', sans-serif; 
+        color: #333;
+    }
+
+    .fonte-exile {
+        font-family: 'Exile', serif;
+    }
+
+    .fonte-bungee {
+        font-family: 'Bungee Shade', cursive;
+    }
+
+    .audiowide-regular {
+        font-family: "Audiowide", sans-serif;
+    }
+
+    .copper-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px 30px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .copper-title {
+        font-size: 42px;
+        color: #3aa6c9;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        font-family: 'Bungee Shade', cursive;
+    }
+
+    .separator {
+        width: 180px;
+        height: 5px;
+        background-color: #3aa6c9;
+        margin: 0 auto 30px auto;
+        border-radius: 2px;
+    }
+
+    .copper-subtitle {
+        text-align: justify;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        color: #444;
+    }
+
+    .copper-sa {
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        color: #444;
+    }
+
+    .btn-cobre {
+        background-color: #3aa6c9;
+        color: white;
+        padding: 12px 20px;
+        margin: 0 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        font-family: "Audiowide", sans-serif;
+    }
+
+        .btn-cobre:hover {
+            background-color: #3292b2;
+        }
+
+    .highlights-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 25px;
+    }
+
+    .highlight-box {
+        flex: 1;
+        min-width: 260px;
+        background-color: #fefefe;
+        border: 1px solid #d6e7ee;
+        border-radius: 12px;
+        padding: 24px 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .highlight-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+        }
+
+    .highlight-icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+        color: #3aa6c9;
+    }
+
+    .highlight-box h5 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #3aa6c9;
+        font-weight: bold;
+        font-family: "Audiowide", sans-serif;
+    }
+
+    .highlight-text {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+    
+    h5 {
+        font-family: "Audiowide", sans-serif;
+    }
+</style>
+
+
+<div style="text-align:center; justify-items:center; margin-bottom:80px; width:100%">
+    <div class="copper-container">
+        <h1 class="copper-title"><strong>Cooler Copper</strong></h1>
+        <h5 class="audiowide-regular"><i>"Suas Soluções de Controle para<strong> SISTEMAS TÉRMICOS</strong>"</i></h5>
+        </br>
+        <div class="separator"></div>
+        <p class="copper-subtitle">
+            <br />
+            <i>A<strong> CoolerCopper</strong> é referência em tecnologias térmicas de alta precisão, desenvolvidas para proteger,
+            conservar e garantir o melhor desempenho de máquinas e motores.<br /><br />
+           
+        </p>
+        <p class="copper-sa">
+            <strong>Aumente a durabilidade dos seus equipamentos, reduza o risco de falhas e otimize seus processos industriais com quem entende do assunto.</strong></i>
+        </p>
+
+        <div class="d-flex flex-wrap justify-content-center mb-4">
+        
+            <a class="btn btn-cobre" asp-controller="Dispositivo" asp-action="Index">
+                <i class="fa-solid fa-fire"></i> Nossos Aquecedores
+            </a>
+        </div>
+
+        <div class="highlights-container">
+            <div class="highlight-box">
+                <div class="highlight-icon"><i class="fa-solid fa-wrench"></i></div>
+                <h5>Produtos sob medida</h5>
+                <p class="highlight-text">
+                    Desenvolvemos sistemas térmicos personalizados de acordo com a necessidade da sua linha de produção, com foco em eficiência energética e segurança.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h5>Segurança em primeiro lugar</h5>
+                <p class="highlight-text">
+                    Nossos equipamentos contam com sensores de temperatura, sistemas de desligamento automático e materiais certificados para uso industrial contínuo.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h5>Resultados concretos</h5>
+                <p class="highlight-text">
+                    Clientes relatam aumento de até 40% na vida útil dos motores e significativa redução nos custos de manutenção após a implementação das nossas soluções.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
