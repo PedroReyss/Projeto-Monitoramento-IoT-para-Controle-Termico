@@ -2,74 +2,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    #areaFiltro {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        font-family: 'Roboto', sans-serif;
-        border: 1px solid #d6e7ee;
-    }
-
-    #areaFiltro legend {
-        font-size: 20px;
-        font-weight: bold;
-        color: #3aa6c9;
-        font-family: 'Audiowide', sans-serif;
-        margin-bottom: 20px;
-    }
-
-    #areaFiltro .form-control {
-        margin-bottom: 10px;
-        border-radius: 6px;
-    }
-
-    #btnFiltro {
-        width: 100%;
-        padding: 10px;
-        font-weight: bold;
-        font-family: 'Audiowide', sans-serif;
-    }
-
-    @media (max-width: 768px) {
-        #areaFiltro .row > div {
-            margin-bottom: 15px;
-        }
-    }
-</style>
-
-<fieldset id="areaFiltro" class="form-group">
+<fieldset id="areaFiltro" class="form-group">Add commentMore actions
     <legend>Consulta dos dispositivos no FIWARE</legend>
-    <div class="row gx-3 gy-2">
-        <div class="col-lg-3 col-md-6">
-            Nome <br />
-            <input type="text" id="nome" class="form-control" />
+    <div class="row">
+        <div class="col-lg-3" >
+            Nome <br/>
+            <input type="text" id="nome" class="form-control">
         </div>
-        <div class="col-lg-2 col-md-6">
-            Faixa de temp<br />
-            <input type="number" id="valorMenor" class="form-control" placeholder="Mín." />
+        <div class="col-lg-2" >
+            Faixa de temp<br/>
+            <input type="number" id="valorMenor" class="form-control">
         </div>
-        <div class="col-lg-2 col-md-6">
+        <div class="col-lg-2">
             <br />
-            <input type="number" id="valorMaior" class="form-control" placeholder="Máx." />
+            <input type="number" id="valorMaior" class="form-control">
         </div>
-        <div class="col-lg-2 col-md-6">
-            Período<br />
-            <input type="date" id="dataInicial" class="form-control" />
+        <div class="col-lg-2" >
+            Período<br/>
+            <input type="date" id="dataInicial" class="form-control">
         </div>
-        <div class="col-lg-2 col-md-6">
+        <div class="col-lg-2">
             <br />
-            <input type="date" id="dataFinal" class="form-control" />
+            <input type="date" id="dataFinal" class="form-control">
         </div>
-        <div class="col-lg-1 col-md-6">
+        <div class="col-lg-1">
             <br />
             <input type="button" id="btnFiltro" class="btn btn-success" value="Aplicar" onclick="aplicarFiltroConsulta()" />
         </div>
     </div>
 </fieldset>
 
-<div id="resultadoConsulta" class="table-responsive mt-4">
+<div id="resultadoConsulta" class="table-responsive">
+</div>nsive mt-4">
 </div>
