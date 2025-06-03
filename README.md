@@ -84,6 +84,69 @@ Desenvolver um **sistema de monitoramento térmico IoT** para estufas utilizadas
 - 🧪 Testes experimentais com análise de resposta em malha aberta e fechada.
 
 ---
+## ⚙️ Sistemas Embarcados (ESP32, AWS, Docker e FIWARE)
+
+### 📶 ESP32: Microcontrolador IoT
+
+O **ESP32** é um microcontrolador com Wi-Fi integrado, ideal para aplicações de IoT. No projeto, ele é responsável por:
+
+- Realizar a **leitura dos sensores de temperatura** da estufa.
+- Enviar os dados por **protocolo MQTT** para o servidor FIWARE.
+- Operar de forma autônoma e em tempo real com baixo consumo de energia.
+
+---
+
+### ☁️ AWS: Infraestrutura em Nuvem
+
+A plataforma **Amazon Web Services (AWS)** foi utilizada para hospedar o ambiente FIWARE em uma **instância EC2 Linux**, garantindo:
+
+- **Alta disponibilidade** do sistema.
+- Acesso remoto aos dados de qualquer local.
+- Facilidade de escalabilidade e manutenção.
+
+---
+
+### 📦 Docker: Contêineres para Implantação
+
+**Docker** foi utilizado para containerizar os serviços do FIWARE, como:
+
+- Orion Context Broker
+- STH-Comet
+- MongoDB
+- IoT Agent (opcional)
+
+Isso garante:
+
+- Implantação padronizada e reprodutível.
+- Facilidade na configuração e atualização dos serviços.
+- Ambiente isolado e controlado.
+
+---
+
+### 🌐 FIWARE: Plataforma Open Source para IoT
+
+**FIWARE** é responsável pelo gerenciamento de contexto da aplicação IoT. No projeto, os seguintes componentes foram utilizados:
+
+| Componente             | Função                                                                 |
+|------------------------|------------------------------------------------------------------------|
+| Orion Context Broker   | Gerencia os dados de temperatura recebidos em tempo real               |
+| STH-Comet              | Armazena os dados históricos em MongoDB                                |
+| MongoDB                | Banco NoSQL utilizado para persistência dos dados                      |
+| NGSI (JSON)            | Protocolo de comunicação entre os componentes FIWARE                   |
+
+**Fluxo de Dados:**
+
+```plaintext
+[ESP32 com Sensor] 
+    ↓ MQTT 
+[IoT Agent / Broker] 
+    ↓ NGSI
+[FIWARE Orion Context Broker] 
+    ↓ NGSI
+[STH-Comet + MongoDB]
+    ↓ REST API
+[Sistema Web ASP.NET MVC → Dashboards / CRUD / Histórico]
+
 
 ## 📚 Disciplinas Envolvidas
 
@@ -106,12 +169,17 @@ Desenvolver um **sistema de monitoramento térmico IoT** para estufas utilizadas
 
 ---
 
-## 📩 Contato
 
-Interessado em aplicar o projeto **CoolerCopper** no seu processo industrial ou quer saber mais?
-
-📧 E-mail: [contato@coolercopper.com](mailto:contato@coolercopper.com)
 
 ---
 
 > Projeto desenvolvido no contexto do **Project Based Learning (PBL)** do curso de **Engenharia da Computação** – 2025.
+
+
+
+
+
+
+
+
+
