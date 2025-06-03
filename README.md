@@ -75,7 +75,7 @@ Desenvolver um **sistema de monitoramento térmico IoT** para estufas utilizadas
 - 🌡️ Monitoramento contínuo da temperatura no processo de secagem.
 - 🔄 Integração entre sensores IoT (ESP32) e APIs do FIWARE.
 - 📁 Sistema Web com:
-  - CRUDs (3 ou mais), incluindo relacionamento entre tabelas e imagens.
+  - CRUDs (3), incluindo relacionamento entre tabelas e imagens.
   - Tela de login e controle de sessão por perfil de usuário.
   - Tela "Sobre" com informações do projeto e dos autores.
   - Filtros e consultas a dados em tempo real (via API FIWARE).
