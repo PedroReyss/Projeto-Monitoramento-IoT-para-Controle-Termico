@@ -131,7 +131,6 @@ Isso garante:
 |------------------------|------------------------------------------------------------------------|
 | Orion Context Broker   | Gerencia os dados de temperatura recebidos em tempo real               |
 | STH-Comet              | Armazena os dados históricos em MongoDB                                |
-| MongoDB                | Banco NoSQL utilizado para persistência dos dados                      |
 | NGSI (JSON)            | Protocolo de comunicação entre os componentes FIWARE                   |
 
 
